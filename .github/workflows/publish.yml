@@ -93,7 +93,7 @@ jobs:
           existing="$(jq -e --arg tag "$tag" '.[]? | select(.tag_name == $tag)' <<<"$releases" || true)"
           release_id="$(jq -r '.id // empty' <<<"$existing")"
           if test -z "$release_id"; then
-            release="$(curl -sS --fail-with-body -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' -H 'Content-Type: application/json' --data "$(jq -nc --arg tag "$tag" --arg commit "$GITHUB_SHA" '{tag_name:$tag,target_commitish:$commit,name:$tag,draft:true,make_latest:"false"}')")"
+            release="$(curl -sS --fail-with-body -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' -H 'Content-Type: application/json' --data "$(jq -nc --arg tag "$tag" --arg commit "$GITHUB_SHA" '{tag_name:$tag,target_commitish:"main",name:$tag,body:("Catalog snapshot from GitHub commit " + $commit),draft:true,make_latest:"false"}')")"
             release_id="$(jq -er '.id' <<<"$release")"
           elif test "$(jq -er '.draft' <<<"$existing")" != true; then
             echo "CNB immutable release is already published: $tag" >&2
@@ -157,7 +157,7 @@ jobs:
           releases="$(curl -fsS "$api?page=1&page_size=100" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' || true)"
           latest="$(jq -e '.[]? | select(.tag_name == "catalog-latest")' <<<"$releases" || true)"
           release_id="$(jq -r '.id // empty' <<<"$latest")"
-          if test -z "$release_id"; then release_id="$(curl -sS --fail-with-body -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' -H 'Content-Type: application/json' --data "$(jq -nc --arg commit "$GITHUB_SHA" '{tag_name:"catalog-latest",target_commitish:$commit,name:"Catalog latest pointer",draft:false,make_latest:"false"}')" | jq -er '.id')"; fi
+          if test -z "$release_id"; then release_id="$(curl -sS --fail-with-body -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' -H 'Content-Type: application/json' --data "$(jq -nc '{tag_name:"catalog-latest",target_commitish:"main",name:"Catalog latest pointer",draft:false,make_latest:"false"}')" | jq -er '.id')"; fi
           upload() {
             file="$1"
             form="$(jq -nc --arg name "$(basename "$file")" --argjson size "$(wc -c < "$file")" '{asset_name:$name,size:$size,ttl:0,overwrite:true}')"
