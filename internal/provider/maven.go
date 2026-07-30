@@ -54,6 +54,9 @@ func (source Maven) Discover(ctx context.Context, platform Platform) ([]Discover
 }
 
 func (source Maven) get(ctx context.Context, rawURL string) ([]byte, error) {
+	if source.HTTP == nil {
+		source.HTTP = http.DefaultClient
+	}
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, rawURL, nil)
 	if err != nil {
 		return nil, err

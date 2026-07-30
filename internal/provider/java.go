@@ -48,6 +48,9 @@ func (source Temurin) Discover(ctx context.Context, platform Platform) ([]Discov
 		base := fmt.Sprintf("%s%s/jdk/%s/%s/", source.BaseURL, major, platform.Arch, osName)
 		body, err := client.get(ctx, base)
 		if err != nil {
+			if strings.Contains(err.Error(), "HTTP 404") {
+				continue
+			}
 			return nil, err
 		}
 		for _, link := range links(body) {

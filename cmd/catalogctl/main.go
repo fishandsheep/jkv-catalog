@@ -23,6 +23,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		return 2
 	}
 	switch args[0] {
+	case "assemble":
+		return runAssemble(args, stdout, stderr)
 	case "validate":
 		if len(args) != 2 {
 			usage(stderr)
@@ -183,4 +185,5 @@ func usage(out io.Writer) {
 	fmt.Fprintln(out, "       catalogctl sign <payload> <key-id> <private-key-base64-file> <envelope.json>")
 	fmt.Fprintln(out, "       catalogctl verify <payload> <envelope> <key-id> <public-key-base64-file>")
 	fmt.Fprintln(out, "       catalogctl discover <candidate> <os> <arch>")
+	fmt.Fprintln(out, "       catalogctl assemble <sequence> <published-at> <source-commit> <output>")
 }
