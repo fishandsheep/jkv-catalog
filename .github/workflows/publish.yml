@@ -106,7 +106,6 @@ jobs:
             url="$1"
             output="$2"
             curl -fsSL --retry 5 --retry-delay 2 --retry-all-errors \
-              -H 'Accept: application/octet-stream' \
               -H "Authorization: Bearer $CNB_TOKEN" \
               "$url?share=true" -o "$output"
           }
@@ -144,7 +143,6 @@ jobs:
             url="$1"
             output="$2"
             curl -fsSL --retry 5 --retry-delay 2 --retry-all-errors \
-              -H 'Accept: application/octet-stream' \
               -H "Authorization: Bearer $CNB_TOKEN" \
               "$url?share=true" -o "$output"
           }
