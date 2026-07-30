@@ -60,7 +60,7 @@ jobs:
           go run ./cmd/catalogctl sign latest.json "$CATALOG_KEY_ID" private-key.base64 latest.json.sig
           rm -f private-key.base64
           sha256sum catalog-v1.json catalog-v1.json.sig latest.json latest.json.sig
-      - name: Create GitHub draft release
+      - name: Create and verify immutable GitHub draft
         if: ${{ !inputs.dry_run }}
         env:
           GH_TOKEN: ${{ github.token }}
@@ -69,4 +69,18 @@ jobs:
           case "$tag" in catalog-v1-[0-9][0-9][0-9][0-9][0-9][0-9]) ;; *) echo "invalid generated release tag" >&2; exit 1 ;; esac
           gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" \
             --notes "Catalog Snapshot from ${GITHUB_SHA}" --draft \
-            catalog-v1.json catalog-v1.json.sig latest.json latest.json.sig
+            catalog-v1.json catalog-v1.json.sig
+          mkdir github-immutable
+          gh release download "$tag" --dir github-immutable --pattern 'catalog-v1.json*'
+          cmp catalog-v1.json github-immutable/catalog-v1.json
+          cmp catalog-v1.json.sig github-immutable/catalog-v1.json.sig
+      - name: Update and verify GitHub latest pointer
+        if: ${{ !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload catalog-latest latest.json latest.json.sig --clobber
+          mkdir github-latest
+          gh release download catalog-latest --dir github-latest --pattern 'latest.json*'
+          cmp latest.json github-latest/latest.json
+          cmp latest.json.sig github-latest/latest.json.sig
