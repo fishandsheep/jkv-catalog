@@ -2,6 +2,7 @@ package snapshot
 
 import (
 	"bytes"
+	"encoding/json"
 	"testing"
 )
 
@@ -51,5 +52,21 @@ func TestBuildProducesDeterministicValidatedSnapshot(t *testing.T) {
 	}
 	if err := Validate(first); err != nil {
 		t.Fatalf("Validate output: %v", err)
+	}
+}
+
+func TestBuildLatestBindsSnapshotHashAndSequence(t *testing.T) {
+	t.Parallel()
+	snapshot := []byte(`{"schema_version":1,"sequence":42,"published_at":"2026-07-30T00:00:00Z","source_commit":"0123456789012345678901234567890123456789","min_client_version":"0.3.0","candidates":[{"name":"maven","display_name":"Maven","description":"Build tool","homepage":"https://maven.apache.org/","default_vendor":"apache","vendors":[{"name":"apache","display_name":"Apache","releases":[{"version":"3.9.11","selector":"3.9.11","support_tier":"core","artifacts":[{"artifact_id":"maven-x64","archive_type":"zip","platforms":[{"os":"linux","arch":"x64"}],"url":"https://example.com/maven.zip"}]}]}]}]}`)
+	latestBytes, err := BuildLatest(snapshot, "catalog-v1.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var latest Latest
+	if err := json.Unmarshal(latestBytes, &latest); err != nil {
+		t.Fatal(err)
+	}
+	if latest.Sequence != 42 || latest.ReleaseTag != "catalog-v1-000042" || latest.SnapshotSHA256 == "" {
+		t.Fatalf("latest = %#v", latest)
 	}
 }

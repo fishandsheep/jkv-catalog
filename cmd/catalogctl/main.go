@@ -60,6 +60,27 @@ func run(args []string, stdout, stderr io.Writer) int {
 		}
 		fmt.Fprintf(stdout, "built %s\n", args[2])
 		return 0
+	case "latest":
+		if len(args) != 4 {
+			usage(stderr)
+			return 2
+		}
+		input, err := os.ReadFile(args[1])
+		if err != nil {
+			fmt.Fprintf(stderr, "read %s: %v\n", args[1], err)
+			return 1
+		}
+		out, err := snapshot.BuildLatest(input, args[2])
+		if err != nil {
+			fmt.Fprintf(stderr, "latest: %v\n", err)
+			return 1
+		}
+		if err := os.WriteFile(args[3], out, 0o644); err != nil {
+			fmt.Fprintf(stderr, "write %s: %v\n", args[3], err)
+			return 1
+		}
+		fmt.Fprintf(stdout, "built %s\n", args[3])
+		return 0
 	case "sign":
 		if len(args) != 5 {
 			usage(stderr)
@@ -158,6 +179,7 @@ func readKey(path string, expected int) ([]byte, error) {
 func usage(out io.Writer) {
 	fmt.Fprintln(out, "usage: catalogctl validate <snapshot>")
 	fmt.Fprintln(out, "       catalogctl build <data.json> <snapshot.json>")
+	fmt.Fprintln(out, "       catalogctl latest <snapshot.json> <asset-name> <latest.json>")
 	fmt.Fprintln(out, "       catalogctl sign <payload> <key-id> <private-key-base64-file> <envelope.json>")
 	fmt.Fprintln(out, "       catalogctl verify <payload> <envelope> <key-id> <public-key-base64-file>")
 	fmt.Fprintln(out, "       catalogctl discover <candidate> <os> <arch>")
