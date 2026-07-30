@@ -89,10 +89,10 @@ jobs:
         run: |
           tag="$(jq -r '.release_tag' latest.json)"
           api="https://api.cnb.cool/${CNB_REPOSITORY}/-/releases"
-          existing="$(curl -fsS "$api/tags/$tag" -H "Authorization: Bearer $CNB_TOKEN" || true)"
+          existing="$(curl -fsS "$api/tags/$tag" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' || true)"
           release_id="$(jq -r '.id // empty' <<<"$existing")"
           if test -z "$release_id"; then
-            release="$(curl -fsS -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Content-Type: application/json' --data "$(jq -nc --arg tag "$tag" --arg commit "$GITHUB_SHA" '{tag_name:$tag,target_commitish:$commit,name:$tag,draft:true,make_latest:"false"}')")"
+            release="$(curl -fsS -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' -H 'Content-Type: application/json' --data "$(jq -nc --arg tag "$tag" --arg commit "$GITHUB_SHA" '{tag_name:$tag,target_commitish:$commit,name:$tag,draft:true,make_latest:"false"}')")"
             release_id="$(jq -er '.id' <<<"$release")"
           elif test "$(jq -er '.draft' <<<"$existing")" != true; then
             echo "CNB immutable release is already published: $tag" >&2
@@ -101,9 +101,9 @@ jobs:
           upload() {
             file="$1"
             form="$(jq -nc --arg name "$(basename "$file")" --argjson size "$(wc -c < "$file")" '{asset_name:$name,size:$size,ttl:0,overwrite:true}')"
-            ticket="$(curl -fsS -X POST "$api/$release_id/asset-upload-url" -H "Authorization: Bearer $CNB_TOKEN" -H 'Content-Type: application/json' --data "$form")"
+            ticket="$(curl -fsS -X POST "$api/$release_id/asset-upload-url" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' -H 'Content-Type: application/json' --data "$form")"
             curl -fsS -X PUT --upload-file "$file" "$(jq -er '.upload_url' <<<"$ticket")"
-            curl -fsS -X POST -H "Authorization: Bearer $CNB_TOKEN" "$(jq -er '.verify_url' <<<"$ticket")?ttl=0"
+            curl -fsS -X POST -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' "$(jq -er '.verify_url' <<<"$ticket")?ttl=0"
           }
           upload catalog-v1.json
           upload catalog-v1.json.sig
@@ -136,7 +136,7 @@ jobs:
               return 1
             }
           }
-          release_after_upload="$(curl -fsS "$api/$release_id" -H "Authorization: Bearer $CNB_TOKEN")"
+          release_after_upload="$(curl -fsS "$api/$release_id" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json')"
           verify_cnb_asset catalog-v1.json "$release_after_upload"
           verify_cnb_asset catalog-v1.json.sig "$release_after_upload"
           printf '%s' "$release_id" > cnb-immutable-release-id
@@ -153,15 +153,15 @@ jobs:
           cmp latest.json github-latest/latest.json
           cmp latest.json.sig github-latest/latest.json.sig
           api="https://api.cnb.cool/${CNB_REPOSITORY}/-/releases"
-          latest="$(curl -fsS "$api/tags/catalog-latest" -H "Authorization: Bearer $CNB_TOKEN" || true)"
+          latest="$(curl -fsS "$api/tags/catalog-latest" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' || true)"
           release_id="$(jq -r '.id // empty' <<<"$latest")"
-          if test -z "$release_id"; then release_id="$(curl -fsS -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Content-Type: application/json' --data "$(jq -nc --arg commit "$GITHUB_SHA" '{tag_name:"catalog-latest",target_commitish:$commit,name:"Catalog latest pointer",draft:false,make_latest:"false"}')" | jq -er '.id')"; fi
+          if test -z "$release_id"; then release_id="$(curl -fsS -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' -H 'Content-Type: application/json' --data "$(jq -nc --arg commit "$GITHUB_SHA" '{tag_name:"catalog-latest",target_commitish:$commit,name:"Catalog latest pointer",draft:false,make_latest:"false"}')" | jq -er '.id')"; fi
           upload() {
             file="$1"
             form="$(jq -nc --arg name "$(basename "$file")" --argjson size "$(wc -c < "$file")" '{asset_name:$name,size:$size,ttl:0,overwrite:true}')"
-            ticket="$(curl -fsS -X POST "$api/$release_id/asset-upload-url" -H "Authorization: Bearer $CNB_TOKEN" -H 'Content-Type: application/json' --data "$form")"
+            ticket="$(curl -fsS -X POST "$api/$release_id/asset-upload-url" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' -H 'Content-Type: application/json' --data "$form")"
             curl -fsS -X PUT --upload-file "$file" "$(jq -er '.upload_url' <<<"$ticket")"
-            curl -fsS -X POST -H "Authorization: Bearer $CNB_TOKEN" "$(jq -er '.verify_url' <<<"$ticket")?ttl=0"
+            curl -fsS -X POST -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' "$(jq -er '.verify_url' <<<"$ticket")?ttl=0"
           }
           upload latest.json
           upload latest.json.sig
@@ -194,14 +194,15 @@ jobs:
               return 1
             }
           }
-          release_after_upload="$(curl -fsS "$api/$release_id" -H "Authorization: Bearer $CNB_TOKEN")"
+          release_after_upload="$(curl -fsS "$api/$release_id" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json')"
           verify_cnb_asset latest.json "$release_after_upload"
           verify_cnb_asset latest.json.sig "$release_after_upload"
           curl -fsS -X PATCH "$api/$release_id" \
             -H "Authorization: Bearer $CNB_TOKEN" \
+            -H 'Accept: application/vnd.cnb.api+json' \
             -H 'Content-Type: application/json' \
             --data '{"draft":false,"make_latest":"false"}' >/dev/null
-          latest_published="$(curl -fsS "$api/$release_id" -H "Authorization: Bearer $CNB_TOKEN")"
+          latest_published="$(curl -fsS "$api/$release_id" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json')"
           test "$(jq -er '.draft' <<<"$latest_published")" = false
       - name: Publish immutable releases
         if: ${{ !inputs.dry_run }}
@@ -214,8 +215,9 @@ jobs:
           release_id="$(cat cnb-immutable-release-id)"
           curl -fsS -X PATCH "$api/$release_id" \
             -H "Authorization: Bearer $CNB_TOKEN" \
+            -H 'Accept: application/vnd.cnb.api+json' \
             -H 'Content-Type: application/json' \
             --data '{"draft":false,"make_latest":"false"}' >/dev/null
-          published="$(curl -fsS "$api/$release_id" -H "Authorization: Bearer $CNB_TOKEN")"
+          published="$(curl -fsS "$api/$release_id" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json')"
           test "$(jq -er '.draft' <<<"$published")" = false
           gh release edit "$(jq -r '.release_tag' latest.json)" --draft=false
