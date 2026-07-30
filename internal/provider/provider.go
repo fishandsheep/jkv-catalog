@@ -15,5 +15,15 @@ func Default(candidate string) (Discoverer, bool) {
 	if candidate == "maven" {
 		return DefaultMaven(), true
 	}
+	switch candidate {
+	case "java":
+		return Java{}, true
+	case "groovy":
+		return DefaultGroovy(), true
+	case "tomcat":
+		return DefaultTomcat(), true
+	case "springboot":
+		return DefaultSpringBoot(), true
+	}
 	return nil, false
 }
