@@ -107,6 +107,7 @@ jobs:
             output="$2"
             curl -fsSL --retry 5 --retry-delay 2 --retry-all-errors \
               -H 'Accept: application/octet-stream' \
+              -H "Authorization: Bearer $CNB_TOKEN" \
               "$url?share=true" -o "$output"
           }
           download_cnb "$CNB_BASE_URL/$tag/catalog-v1.json" cnb-immutable/catalog-v1.json
@@ -144,6 +145,7 @@ jobs:
             output="$2"
             curl -fsSL --retry 5 --retry-delay 2 --retry-all-errors \
               -H 'Accept: application/octet-stream' \
+              -H "Authorization: Bearer $CNB_TOKEN" \
               "$url?share=true" -o "$output"
           }
           download_cnb "$CNB_BASE_URL/catalog-latest/latest.json" cnb-latest/latest.json
