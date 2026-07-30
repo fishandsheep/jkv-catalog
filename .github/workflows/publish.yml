@@ -1,0 +1,64 @@
+name: Publish catalog
+
+on:
+  workflow_dispatch:
+    inputs:
+      sequence:
+        description: Six-digit catalog sequence, for example 000001
+        required: true
+        type: string
+      data_file:
+        description: Reviewed declarative input path
+        required: true
+        default: data/catalog-input.json
+        type: string
+      dry_run:
+        description: Build and verify only; do not create a release
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: catalog-publication
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: catalog-publication
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.x'
+      - name: Validate reviewed input
+        run: go run ./cmd/catalogctl validate "${{ inputs.data_file }}"
+      - name: Build immutable assets
+        run: |
+          go run ./cmd/catalogctl build "${{ inputs.data_file }}" catalog-v1.json
+          go run ./cmd/catalogctl latest catalog-v1.json catalog-v1.json latest.json
+          sha256sum catalog-v1.json latest.json
+      - name: Sign assets
+        env:
+          CATALOG_PRIVATE_KEY: ${{ secrets.CATALOG_ED25519_PRIVATE_KEY_BASE64 }}
+          CATALOG_KEY_ID: ${{ vars.CATALOG_KEY_ID }}
+        run: |
+          umask 077
+          printf '%s' "$CATALOG_PRIVATE_KEY" > private-key.base64
+          go run ./cmd/catalogctl sign catalog-v1.json "$CATALOG_KEY_ID" private-key.base64 catalog-v1.json.sig
+          go run ./cmd/catalogctl sign latest.json "$CATALOG_KEY_ID" private-key.base64 latest.json.sig
+          rm -f private-key.base64
+          sha256sum catalog-v1.json catalog-v1.json.sig latest.json latest.json.sig
+      - name: Create GitHub draft release
+        if: ${{ !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="catalog-v1-${{ inputs.sequence }}"
+          gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" \
+            --notes "Catalog Snapshot from ${GITHUB_SHA}" --draft \
+            catalog-v1.json catalog-v1.json.sig latest.json latest.json.sig
