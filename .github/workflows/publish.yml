@@ -102,8 +102,15 @@ jobs:
           upload catalog-v1.json
           upload catalog-v1.json.sig
           mkdir cnb-immutable
-          curl -fsSL "$CNB_BASE_URL/$tag/catalog-v1.json" -o cnb-immutable/catalog-v1.json
-          curl -fsSL "$CNB_BASE_URL/$tag/catalog-v1.json.sig" -o cnb-immutable/catalog-v1.json.sig
+          download_cnb() {
+            url="$1"
+            output="$2"
+            curl -fsSL --retry 5 --retry-delay 2 --retry-all-errors \
+              -H 'Accept: application/octet-stream' \
+              "$url?share=true" -o "$output"
+          }
+          download_cnb "$CNB_BASE_URL/$tag/catalog-v1.json" cnb-immutable/catalog-v1.json
+          download_cnb "$CNB_BASE_URL/$tag/catalog-v1.json.sig" cnb-immutable/catalog-v1.json.sig
           cmp catalog-v1.json cnb-immutable/catalog-v1.json
           cmp catalog-v1.json.sig cnb-immutable/catalog-v1.json.sig
       - name: Update and verify both latest pointers
@@ -132,8 +139,15 @@ jobs:
           }
           upload latest.json
           upload latest.json.sig
-          curl -fsSL "$CNB_BASE_URL/catalog-latest/latest.json" -o cnb-latest/latest.json
-          curl -fsSL "$CNB_BASE_URL/catalog-latest/latest.json.sig" -o cnb-latest/latest.json.sig
+          download_cnb() {
+            url="$1"
+            output="$2"
+            curl -fsSL --retry 5 --retry-delay 2 --retry-all-errors \
+              -H 'Accept: application/octet-stream' \
+              "$url?share=true" -o "$output"
+          }
+          download_cnb "$CNB_BASE_URL/catalog-latest/latest.json" cnb-latest/latest.json
+          download_cnb "$CNB_BASE_URL/catalog-latest/latest.json.sig" cnb-latest/latest.json.sig
           cmp latest.json cnb-latest/latest.json
           cmp latest.json.sig cnb-latest/latest.json.sig
       - name: Publish immutable GitHub release
