@@ -2,12 +2,15 @@
 package main
 
 import (
+	"context"
 	"crypto/ed25519"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io"
 	"os"
 
+	"github.com/fishandsheep/jkv-catalog/internal/provider"
 	"github.com/fishandsheep/jkv-catalog/internal/signing"
 	"github.com/fishandsheep/jkv-catalog/internal/snapshot"
 )
@@ -19,16 +22,16 @@ func run(args []string, stdout, stderr io.Writer) int {
 		usage(stderr)
 		return 2
 	}
-	input, err := os.ReadFile(args[1])
-	if err != nil {
-		fmt.Fprintf(stderr, "read %s: %v\n", args[1], err)
-		return 1
-	}
 	switch args[0] {
 	case "validate":
 		if len(args) != 2 {
 			usage(stderr)
 			return 2
+		}
+		input, err := os.ReadFile(args[1])
+		if err != nil {
+			fmt.Fprintf(stderr, "read %s: %v\n", args[1], err)
+			return 1
 		}
 		if err := snapshot.Validate(input); err != nil {
 			fmt.Fprintf(stderr, "validate: %v\n", err)
@@ -40,6 +43,11 @@ func run(args []string, stdout, stderr io.Writer) int {
 		if len(args) != 3 {
 			usage(stderr)
 			return 2
+		}
+		input, err := os.ReadFile(args[1])
+		if err != nil {
+			fmt.Fprintf(stderr, "read %s: %v\n", args[1], err)
+			return 1
 		}
 		out, err := snapshot.Build(input)
 		if err != nil {
@@ -56,6 +64,11 @@ func run(args []string, stdout, stderr io.Writer) int {
 		if len(args) != 5 {
 			usage(stderr)
 			return 2
+		}
+		input, err := os.ReadFile(args[1])
+		if err != nil {
+			fmt.Fprintf(stderr, "read %s: %v\n", args[1], err)
+			return 1
 		}
 		private, err := readKey(args[3], ed25519.PrivateKeySize)
 		if err != nil {
@@ -78,6 +91,11 @@ func run(args []string, stdout, stderr io.Writer) int {
 			usage(stderr)
 			return 2
 		}
+		input, err := os.ReadFile(args[1])
+		if err != nil {
+			fmt.Fprintf(stderr, "read %s: %v\n", args[1], err)
+			return 1
+		}
 		envelope, err := os.ReadFile(args[2])
 		if err != nil {
 			fmt.Fprintf(stderr, "read %s: %v\n", args[2], err)
@@ -93,6 +111,28 @@ func run(args []string, stdout, stderr io.Writer) int {
 			return 1
 		}
 		fmt.Fprintln(stdout, "verified")
+		return 0
+	case "discover":
+		if len(args) != 4 {
+			usage(stderr)
+			return 2
+		}
+		source, ok := provider.DefaultFlatArchive(args[1])
+		if !ok {
+			fmt.Fprintf(stderr, "discover: candidate %q needs a dedicated provider\n", args[1])
+			return 1
+		}
+		discoveries, err := source.Discover(context.Background(), provider.Platform{OS: args[2], Arch: args[3]})
+		if err != nil {
+			fmt.Fprintf(stderr, "discover: %v\n", err)
+			return 1
+		}
+		out, err := json.MarshalIndent(discoveries, "", "  ")
+		if err != nil {
+			fmt.Fprintf(stderr, "discover: encode: %v\n", err)
+			return 1
+		}
+		_, _ = stdout.Write(append(out, '\n'))
 		return 0
 	default:
 		usage(stderr)
@@ -120,4 +160,5 @@ func usage(out io.Writer) {
 	fmt.Fprintln(out, "       catalogctl build <data.json> <snapshot.json>")
 	fmt.Fprintln(out, "       catalogctl sign <payload> <key-id> <private-key-base64-file> <envelope.json>")
 	fmt.Fprintln(out, "       catalogctl verify <payload> <envelope> <key-id> <public-key-base64-file>")
+	fmt.Fprintln(out, "       catalogctl discover <gradle|ant|jmeter> <os> <arch>")
 }
