@@ -117,7 +117,7 @@ func run(args []string, stdout, stderr io.Writer) int {
 			usage(stderr)
 			return 2
 		}
-		source, ok := provider.DefaultFlatArchive(args[1])
+		source, ok := provider.Default(args[1])
 		if !ok {
 			fmt.Fprintf(stderr, "discover: candidate %q needs a dedicated provider\n", args[1])
 			return 1
@@ -160,5 +160,5 @@ func usage(out io.Writer) {
 	fmt.Fprintln(out, "       catalogctl build <data.json> <snapshot.json>")
 	fmt.Fprintln(out, "       catalogctl sign <payload> <key-id> <private-key-base64-file> <envelope.json>")
 	fmt.Fprintln(out, "       catalogctl verify <payload> <envelope> <key-id> <public-key-base64-file>")
-	fmt.Fprintln(out, "       catalogctl discover <gradle|ant|jmeter> <os> <arch>")
+	fmt.Fprintln(out, "       catalogctl discover <candidate> <os> <arch>")
 }

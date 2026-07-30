@@ -9,7 +9,7 @@ func TestDefaultFlatArchive(t *testing.T) {
 			t.Fatalf("%s = %#v, %v", candidate, source, ok)
 		}
 	}
-	if _, ok := DefaultFlatArchive("maven"); ok {
-		t.Fatal("maven is not a flat archive source")
+	if _, ok := Default("maven"); !ok {
+		t.Fatal("maven provider missing")
 	}
 }
