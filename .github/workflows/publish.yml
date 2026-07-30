@@ -74,13 +74,63 @@ jobs:
           gh release download "$tag" --dir github-immutable --pattern 'catalog-v1.json*'
           cmp catalog-v1.json github-immutable/catalog-v1.json
           cmp catalog-v1.json.sig github-immutable/catalog-v1.json.sig
-      - name: Update and verify GitHub latest pointer
+      - name: Create and verify immutable CNB draft
+        if: ${{ !inputs.dry_run }}
+        env:
+          CNB_TOKEN: ${{ secrets.CNB_CATALOG_TOKEN }}
+          CNB_REPOSITORY: ${{ vars.CNB_CATALOG_REPOSITORY }}
+          CNB_BASE_URL: ${{ vars.CNB_CATALOG_BASE_URL }}
+        run: |
+          tag="$(jq -r '.release_tag' latest.json)"
+          api="https://api.cnb.cool/${CNB_REPOSITORY}/-/releases"
+          release="$(curl -fsS -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Content-Type: application/json' --data "$(jq -nc --arg tag "$tag" --arg commit "$GITHUB_SHA" '{tag_name:$tag,target_commitish:$commit,name:$tag,draft:true,make_latest:"false"}')")"
+          release_id="$(jq -er '.id' <<<"$release")"
+          upload() {
+            file="$1"
+            form="$(jq -nc --arg name "$(basename "$file")" --argjson size "$(wc -c < "$file")" '{asset_name:$name,size:$size,ttl:0,overwrite:false}')"
+            ticket="$(curl -fsS -X POST "$api/$release_id/asset-upload-url" -H "Authorization: Bearer $CNB_TOKEN" -H 'Content-Type: application/json' --data "$form")"
+            curl -fsS -X PUT --upload-file "$file" "$(jq -er '.upload_url' <<<"$ticket")"
+            curl -fsS -X POST -H "Authorization: Bearer $CNB_TOKEN" "$(jq -er '.verify_url' <<<"$ticket")?ttl=0"
+          }
+          upload catalog-v1.json
+          upload catalog-v1.json.sig
+          mkdir cnb-immutable
+          curl -fsSL "$CNB_BASE_URL/$tag/catalog-v1.json" -o cnb-immutable/catalog-v1.json
+          curl -fsSL "$CNB_BASE_URL/$tag/catalog-v1.json.sig" -o cnb-immutable/catalog-v1.json.sig
+          cmp catalog-v1.json cnb-immutable/catalog-v1.json
+          cmp catalog-v1.json.sig cnb-immutable/catalog-v1.json.sig
+      - name: Update and verify both latest pointers
         if: ${{ !inputs.dry_run }}
         env:
           GH_TOKEN: ${{ github.token }}
+          CNB_TOKEN: ${{ secrets.CNB_CATALOG_TOKEN }}
+          CNB_REPOSITORY: ${{ vars.CNB_CATALOG_REPOSITORY }}
+          CNB_BASE_URL: ${{ vars.CNB_CATALOG_BASE_URL }}
         run: |
           gh release upload catalog-latest latest.json latest.json.sig --clobber
-          mkdir github-latest
+          mkdir github-latest cnb-latest
           gh release download catalog-latest --dir github-latest --pattern 'latest.json*'
           cmp latest.json github-latest/latest.json
           cmp latest.json.sig github-latest/latest.json.sig
+          api="https://api.cnb.cool/${CNB_REPOSITORY}/-/releases"
+          latest="$(curl -fsS "$api/tags/catalog-latest" -H "Authorization: Bearer $CNB_TOKEN" || true)"
+          release_id="$(jq -r '.id // empty' <<<"$latest")"
+          if test -z "$release_id"; then release_id="$(curl -fsS -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Content-Type: application/json' --data "$(jq -nc --arg commit "$GITHUB_SHA" '{tag_name:"catalog-latest",target_commitish:$commit,name:"Catalog latest pointer",draft:false,make_latest:"false"}')" | jq -er '.id')"; fi
+          upload() {
+            file="$1"
+            form="$(jq -nc --arg name "$(basename "$file")" --argjson size "$(wc -c < "$file")" '{asset_name:$name,size:$size,ttl:0,overwrite:true}')"
+            ticket="$(curl -fsS -X POST "$api/$release_id/asset-upload-url" -H "Authorization: Bearer $CNB_TOKEN" -H 'Content-Type: application/json' --data "$form")"
+            curl -fsS -X PUT --upload-file "$file" "$(jq -er '.upload_url' <<<"$ticket")"
+            curl -fsS -X POST -H "Authorization: Bearer $CNB_TOKEN" "$(jq -er '.verify_url' <<<"$ticket")?ttl=0"
+          }
+          upload latest.json
+          upload latest.json.sig
+          curl -fsSL "$CNB_BASE_URL/catalog-latest/latest.json" -o cnb-latest/latest.json
+          curl -fsSL "$CNB_BASE_URL/catalog-latest/latest.json.sig" -o cnb-latest/latest.json.sig
+          cmp latest.json cnb-latest/latest.json
+          cmp latest.json.sig cnb-latest/latest.json.sig
+      - name: Publish immutable GitHub release
+        if: ${{ !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release edit "$(jq -r '.release_tag' latest.json)" --draft=false
