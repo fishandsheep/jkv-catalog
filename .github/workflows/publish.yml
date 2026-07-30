@@ -67,11 +67,15 @@ jobs:
         run: |
           tag="$(jq -r '.release_tag' latest.json)"
           case "$tag" in catalog-v1-[0-9][0-9][0-9][0-9][0-9][0-9]) ;; *) echo "invalid generated release tag" >&2; exit 1 ;; esac
-          gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" \
-            --notes "Catalog Snapshot from ${GITHUB_SHA}" --draft \
-            catalog-v1.json catalog-v1.json.sig
           mkdir github-immutable
-          gh release download "$tag" --dir github-immutable --pattern 'catalog-v1.json*'
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release download "$tag" --dir github-immutable --pattern 'catalog-v1.json*'
+          else
+            gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" \
+              --notes "Catalog Snapshot from ${GITHUB_SHA}" --draft \
+              catalog-v1.json catalog-v1.json.sig
+            gh release download "$tag" --dir github-immutable --pattern 'catalog-v1.json*'
+          fi
           cmp catalog-v1.json github-immutable/catalog-v1.json
           cmp catalog-v1.json.sig github-immutable/catalog-v1.json.sig
       - name: Create and verify immutable CNB draft
