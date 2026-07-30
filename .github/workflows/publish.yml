@@ -36,6 +36,9 @@ jobs:
           DATA_FILE: ${{ inputs.data_file }}
           DRY_RUN: ${{ inputs.dry_run }}
         run: |
+          DATA_FILE="${DATA_FILE#"${DATA_FILE%%[![:space:]]*}"}"
+          DATA_FILE="${DATA_FILE%"${DATA_FILE##*[![:space:]]}"}"
+          test -n "$DATA_FILE"
           case "$DRY_RUN:$DATA_FILE" in
             true:fixtures/*.json|true:data/*.json|false:data/*.json) ;;
             *) echo "data_file must be a JSON file below data/" >&2; exit 2 ;;
