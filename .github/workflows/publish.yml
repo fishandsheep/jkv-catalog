@@ -86,43 +86,69 @@ jobs:
         env:
           CNB_TOKEN: ${{ secrets.CNB_CATALOG_TOKEN }}
           CNB_REPOSITORY: ${{ vars.CNB_CATALOG_REPOSITORY }}
-          CNB_BASE_URL: ${{ vars.CNB_CATALOG_BASE_URL }}
         run: |
           tag="$(jq -r '.release_tag' latest.json)"
           api="https://api.cnb.cool/${CNB_REPOSITORY}/-/releases"
-          release="$(curl -fsS -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Content-Type: application/json' --data "$(jq -nc --arg tag "$tag" --arg commit "$GITHUB_SHA" '{tag_name:$tag,target_commitish:$commit,name:$tag,draft:true,make_latest:"false"}')")"
-          release_id="$(jq -er '.id' <<<"$release")"
+          existing="$(curl -fsS "$api/tags/$tag" -H "Authorization: Bearer $CNB_TOKEN" || true)"
+          release_id="$(jq -r '.id // empty' <<<"$existing")"
+          if test -z "$release_id"; then
+            release="$(curl -fsS -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Content-Type: application/json' --data "$(jq -nc --arg tag "$tag" --arg commit "$GITHUB_SHA" '{tag_name:$tag,target_commitish:$commit,name:$tag,draft:true,make_latest:"false"}')")"
+            release_id="$(jq -er '.id' <<<"$release")"
+          elif test "$(jq -er '.draft' <<<"$existing")" != true; then
+            echo "CNB immutable release is already published: $tag" >&2
+            exit 1
+          fi
           upload() {
             file="$1"
-            form="$(jq -nc --arg name "$(basename "$file")" --argjson size "$(wc -c < "$file")" '{asset_name:$name,size:$size,ttl:0,overwrite:false}')"
+            form="$(jq -nc --arg name "$(basename "$file")" --argjson size "$(wc -c < "$file")" '{asset_name:$name,size:$size,ttl:0,overwrite:true}')"
             ticket="$(curl -fsS -X POST "$api/$release_id/asset-upload-url" -H "Authorization: Bearer $CNB_TOKEN" -H 'Content-Type: application/json' --data "$form")"
             curl -fsS -X PUT --upload-file "$file" "$(jq -er '.upload_url' <<<"$ticket")"
             curl -fsS -X POST -H "Authorization: Bearer $CNB_TOKEN" "$(jq -er '.verify_url' <<<"$ticket")?ttl=0"
           }
           upload catalog-v1.json
           upload catalog-v1.json.sig
-          mkdir cnb-immutable
-          download_cnb() {
-            url="$1"
-            output="$2"
-            curl -fsSL --retry 5 --retry-delay 2 --retry-all-errors \
-              -H "Authorization: Bearer $CNB_TOKEN" \
-              "$url?share=true" -o "$output"
+          verify_cnb_asset() {
+            file="$1"
+            release_json="$2"
+            name="$(basename "$file")"
+            if ! asset="$(jq -e --arg name "$name" '.assets[]? | select(.name == $name)' <<<"$release_json")"; then
+              echo "CNB asset not found after upload: $name" >&2
+              return 1
+            fi
+            hash_algo="$(jq -er '.hash_algo // empty' <<<"$asset" | tr '[:upper:]' '[:lower:]')"
+            expected_hash="$(jq -er '.hash_value' <<<"$asset" | tr '[:upper:]' '[:lower:]')"
+            expected_size="$(jq -er '.size' <<<"$asset")"
+            actual_hash="$(sha256sum "$file" | awk '{print $1}')"
+            actual_size="$(wc -c < "$file" | tr -d '[:space:]')"
+            case "$hash_algo" in
+              sha256|sha-256|sha_256) ;;
+              *)
+              echo "unsupported CNB hash algorithm for $name: $hash_algo" >&2
+              return 1
+              ;;
+            esac
+            test "$actual_size" = "$expected_size" || {
+              echo "CNB size mismatch for $name: expected $expected_size, got $actual_size" >&2
+              return 1
+            }
+            test "$actual_hash" = "$expected_hash" || {
+              echo "CNB SHA-256 mismatch for $name" >&2
+              return 1
+            }
           }
-          download_cnb "$CNB_BASE_URL/$tag/catalog-v1.json" cnb-immutable/catalog-v1.json
-          download_cnb "$CNB_BASE_URL/$tag/catalog-v1.json.sig" cnb-immutable/catalog-v1.json.sig
-          cmp catalog-v1.json cnb-immutable/catalog-v1.json
-          cmp catalog-v1.json.sig cnb-immutable/catalog-v1.json.sig
+          release_after_upload="$(curl -fsS "$api/$release_id" -H "Authorization: Bearer $CNB_TOKEN")"
+          verify_cnb_asset catalog-v1.json "$release_after_upload"
+          verify_cnb_asset catalog-v1.json.sig "$release_after_upload"
+          printf '%s' "$release_id" > cnb-immutable-release-id
       - name: Update and verify both latest pointers
         if: ${{ !inputs.dry_run }}
         env:
           GH_TOKEN: ${{ github.token }}
           CNB_TOKEN: ${{ secrets.CNB_CATALOG_TOKEN }}
           CNB_REPOSITORY: ${{ vars.CNB_CATALOG_REPOSITORY }}
-          CNB_BASE_URL: ${{ vars.CNB_CATALOG_BASE_URL }}
         run: |
           gh release upload catalog-latest latest.json latest.json.sig --clobber
-          mkdir github-latest cnb-latest
+          mkdir github-latest
           gh release download catalog-latest --dir github-latest --pattern 'latest.json*'
           cmp latest.json github-latest/latest.json
           cmp latest.json.sig github-latest/latest.json.sig
@@ -139,19 +165,57 @@ jobs:
           }
           upload latest.json
           upload latest.json.sig
-          download_cnb() {
-            url="$1"
-            output="$2"
-            curl -fsSL --retry 5 --retry-delay 2 --retry-all-errors \
-              -H "Authorization: Bearer $CNB_TOKEN" \
-              "$url?share=true" -o "$output"
+          verify_cnb_asset() {
+            file="$1"
+            release_json="$2"
+            name="$(basename "$file")"
+            if ! asset="$(jq -e --arg name "$name" '.assets[]? | select(.name == $name)' <<<"$release_json")"; then
+              echo "CNB asset not found after upload: $name" >&2
+              return 1
+            fi
+            hash_algo="$(jq -er '.hash_algo // empty' <<<"$asset" | tr '[:upper:]' '[:lower:]')"
+            expected_hash="$(jq -er '.hash_value' <<<"$asset" | tr '[:upper:]' '[:lower:]')"
+            expected_size="$(jq -er '.size' <<<"$asset")"
+            actual_hash="$(sha256sum "$file" | awk '{print $1}')"
+            actual_size="$(wc -c < "$file" | tr -d '[:space:]')"
+            case "$hash_algo" in
+              sha256|sha-256|sha_256) ;;
+              *)
+              echo "unsupported CNB hash algorithm for $name: $hash_algo" >&2
+              return 1
+              ;;
+            esac
+            test "$actual_size" = "$expected_size" || {
+              echo "CNB size mismatch for $name: expected $expected_size, got $actual_size" >&2
+              return 1
+            }
+            test "$actual_hash" = "$expected_hash" || {
+              echo "CNB SHA-256 mismatch for $name" >&2
+              return 1
+            }
           }
-          download_cnb "$CNB_BASE_URL/catalog-latest/latest.json" cnb-latest/latest.json
-          download_cnb "$CNB_BASE_URL/catalog-latest/latest.json.sig" cnb-latest/latest.json.sig
-          cmp latest.json cnb-latest/latest.json
-          cmp latest.json.sig cnb-latest/latest.json.sig
-      - name: Publish immutable GitHub release
+          release_after_upload="$(curl -fsS "$api/$release_id" -H "Authorization: Bearer $CNB_TOKEN")"
+          verify_cnb_asset latest.json "$release_after_upload"
+          verify_cnb_asset latest.json.sig "$release_after_upload"
+          curl -fsS -X PATCH "$api/$release_id" \
+            -H "Authorization: Bearer $CNB_TOKEN" \
+            -H 'Content-Type: application/json' \
+            --data '{"draft":false,"make_latest":"false"}' >/dev/null
+          latest_published="$(curl -fsS "$api/$release_id" -H "Authorization: Bearer $CNB_TOKEN")"
+          test "$(jq -er '.draft' <<<"$latest_published")" = false
+      - name: Publish immutable releases
         if: ${{ !inputs.dry_run }}
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release edit "$(jq -r '.release_tag' latest.json)" --draft=false
+          CNB_TOKEN: ${{ secrets.CNB_CATALOG_TOKEN }}
+          CNB_REPOSITORY: ${{ vars.CNB_CATALOG_REPOSITORY }}
+        run: |
+          api="https://api.cnb.cool/${CNB_REPOSITORY}/-/releases"
+          release_id="$(cat cnb-immutable-release-id)"
+          curl -fsS -X PATCH "$api/$release_id" \
+            -H "Authorization: Bearer $CNB_TOKEN" \
+            -H 'Content-Type: application/json' \
+            --data '{"draft":false,"make_latest":"false"}' >/dev/null
+          published="$(curl -fsS "$api/$release_id" -H "Authorization: Bearer $CNB_TOKEN")"
+          test "$(jq -er '.draft' <<<"$published")" = false
+          gh release edit "$(jq -r '.release_tag' latest.json)" --draft=false
