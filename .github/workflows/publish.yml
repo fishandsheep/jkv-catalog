@@ -3,10 +3,6 @@ name: Publish catalog
 on:
   workflow_dispatch:
     inputs:
-      sequence:
-        description: Six-digit catalog sequence, for example 000001
-        required: true
-        type: string
       data_file:
         description: Reviewed declarative input path
         required: true
@@ -36,10 +32,20 @@ jobs:
         with:
           go-version: '1.24.x'
       - name: Validate reviewed input
-        run: go run ./cmd/catalogctl validate "${{ inputs.data_file }}"
-      - name: Build immutable assets
+        env:
+          DATA_FILE: ${{ inputs.data_file }}
         run: |
-          go run ./cmd/catalogctl build "${{ inputs.data_file }}" catalog-v1.json
+          case "$DATA_FILE" in
+            data/*.json) ;;
+            *) echo "data_file must be a JSON file below data/" >&2; exit 2 ;;
+          esac
+          test -f "$DATA_FILE"
+          go run ./cmd/catalogctl validate "$DATA_FILE"
+      - name: Build immutable assets
+        env:
+          DATA_FILE: ${{ inputs.data_file }}
+        run: |
+          go run ./cmd/catalogctl build "$DATA_FILE" catalog-v1.json
           go run ./cmd/catalogctl latest catalog-v1.json catalog-v1.json latest.json
           sha256sum catalog-v1.json latest.json
       - name: Sign assets
@@ -58,7 +64,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          tag="catalog-v1-${{ inputs.sequence }}"
+          tag="$(jq -r '.release_tag' latest.json)"
+          case "$tag" in catalog-v1-[0-9][0-9][0-9][0-9][0-9][0-9]) ;; *) echo "invalid generated release tag" >&2; exit 1 ;; esac
           gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" \
             --notes "Catalog Snapshot from ${GITHUB_SHA}" --draft \
             catalog-v1.json catalog-v1.json.sig latest.json latest.json.sig
