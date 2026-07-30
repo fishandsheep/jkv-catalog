@@ -6,7 +6,7 @@ on:
       data_file:
         description: Reviewed declarative input path
         required: true
-        default: data/catalog-input.json
+        default: fixtures/minimal-v1.json
         type: string
       dry_run:
         description: Build and verify only; do not create a release
@@ -34,9 +34,10 @@ jobs:
       - name: Validate reviewed input
         env:
           DATA_FILE: ${{ inputs.data_file }}
+          DRY_RUN: ${{ inputs.dry_run }}
         run: |
-          case "$DATA_FILE" in
-            data/*.json) ;;
+          case "$DRY_RUN:$DATA_FILE" in
+            true:fixtures/*.json|true:data/*.json|false:data/*.json) ;;
             *) echo "data_file must be a JSON file below data/" >&2; exit 2 ;;
           esac
           test -f "$DATA_FILE"
