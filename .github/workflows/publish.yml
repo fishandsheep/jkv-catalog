@@ -89,10 +89,11 @@ jobs:
         run: |
           tag="$(jq -r '.release_tag' latest.json)"
           api="https://api.cnb.cool/${CNB_REPOSITORY}/-/releases"
-          existing="$(curl -fsS "$api/tags/$tag" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' || true)"
+          releases="$(curl -fsS "$api?page=1&page_size=100" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' || true)"
+          existing="$(jq -e --arg tag "$tag" '.[]? | select(.tag_name == $tag)' <<<"$releases" || true)"
           release_id="$(jq -r '.id // empty' <<<"$existing")"
           if test -z "$release_id"; then
-            release="$(curl -fsS -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' -H 'Content-Type: application/json' --data "$(jq -nc --arg tag "$tag" --arg commit "$GITHUB_SHA" '{tag_name:$tag,target_commitish:$commit,name:$tag,draft:true,make_latest:"false"}')")"
+            release="$(curl -sS --fail-with-body -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' -H 'Content-Type: application/json' --data "$(jq -nc --arg tag "$tag" --arg commit "$GITHUB_SHA" '{tag_name:$tag,target_commitish:$commit,name:$tag,draft:true,make_latest:"false"}')")"
             release_id="$(jq -er '.id' <<<"$release")"
           elif test "$(jq -er '.draft' <<<"$existing")" != true; then
             echo "CNB immutable release is already published: $tag" >&2
@@ -153,9 +154,10 @@ jobs:
           cmp latest.json github-latest/latest.json
           cmp latest.json.sig github-latest/latest.json.sig
           api="https://api.cnb.cool/${CNB_REPOSITORY}/-/releases"
-          latest="$(curl -fsS "$api/tags/catalog-latest" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' || true)"
+          releases="$(curl -fsS "$api?page=1&page_size=100" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' || true)"
+          latest="$(jq -e '.[]? | select(.tag_name == "catalog-latest")' <<<"$releases" || true)"
           release_id="$(jq -r '.id // empty' <<<"$latest")"
-          if test -z "$release_id"; then release_id="$(curl -fsS -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' -H 'Content-Type: application/json' --data "$(jq -nc --arg commit "$GITHUB_SHA" '{tag_name:"catalog-latest",target_commitish:$commit,name:"Catalog latest pointer",draft:false,make_latest:"false"}')" | jq -er '.id')"; fi
+          if test -z "$release_id"; then release_id="$(curl -sS --fail-with-body -X POST "$api" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' -H 'Content-Type: application/json' --data "$(jq -nc --arg commit "$GITHUB_SHA" '{tag_name:"catalog-latest",target_commitish:$commit,name:"Catalog latest pointer",draft:false,make_latest:"false"}')" | jq -er '.id')"; fi
           upload() {
             file="$1"
             form="$(jq -nc --arg name "$(basename "$file")" --argjson size "$(wc -c < "$file")" '{asset_name:$name,size:$size,ttl:0,overwrite:true}')"
