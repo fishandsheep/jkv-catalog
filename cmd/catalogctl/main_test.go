@@ -2,6 +2,8 @@ package main
 
 import (
 	"bytes"
+	"crypto/ed25519"
+	"encoding/base64"
 	"os"
 	"path/filepath"
 	"testing"
@@ -24,5 +26,22 @@ func TestRunBuildWritesCanonicalSnapshot(t *testing.T) {
 	}
 	if got := stdout.String(); got == "" {
 		t.Fatal("expected command output")
+	}
+}
+
+func TestRunPublicKeyDerivesEd25519PublicKey(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "private.base64")
+	private := ed25519.NewKeyFromSeed(bytes.Repeat([]byte{7}, ed25519.SeedSize))
+	if err := os.WriteFile(path, []byte(base64.StdEncoding.EncodeToString(private)), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	var stdout, stderr bytes.Buffer
+	if code := run([]string{"public-key", path}, &stdout, &stderr); code != 0 {
+		t.Fatalf("run = %d, stderr = %s", code, stderr.String())
+	}
+	got, err := base64.StdEncoding.DecodeString(string(bytes.TrimSpace(stdout.Bytes())))
+	if err != nil || !bytes.Equal(got, private.Public().(ed25519.PublicKey)) {
+		t.Fatalf("public key = %q, %v", got, err)
 	}
 }

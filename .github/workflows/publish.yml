@@ -212,6 +212,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           CNB_TOKEN: ${{ secrets.CNB_CATALOG_TOKEN }}
           CNB_REPOSITORY: ${{ vars.CNB_CATALOG_REPOSITORY }}
+          CNB_CATALOG_BASE_URL: ${{ vars.CNB_CATALOG_BASE_URL }}
         run: |
           api="https://api.cnb.cool/${CNB_REPOSITORY}/-/releases"
           release_id="$(cat cnb-immutable-release-id)"
@@ -223,3 +224,27 @@ jobs:
           published="$(curl -fsS "$api/$release_id" -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json')"
           test "$(jq -er '.draft' <<<"$published")" = false
           gh release edit "$(jq -r '.release_tag' latest.json)" --draft=false
+      - name: Verify public GitHub and CNB bytes
+        if: ${{ !inputs.dry_run }}
+        env:
+          CNB_CATALOG_BASE_URL: ${{ vars.CNB_CATALOG_BASE_URL }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -n "$CNB_CATALOG_BASE_URL"
+          base="${CNB_CATALOG_BASE_URL%/}"
+          tag="$(jq -r '.release_tag' latest.json)"
+          mkdir public-github public-cnb
+          gh release download "$tag" --dir public-github --pattern 'catalog-v1.json*'
+          gh release download catalog-latest --dir public-github --pattern 'latest.json*'
+          curl -fsSL "$base/$tag/catalog-v1.json" -o public-cnb/catalog-v1.json
+          curl -fsSL "$base/$tag/catalog-v1.json.sig" -o public-cnb/catalog-v1.json.sig
+          curl -fsSL "$base/catalog-latest/latest.json" -o public-cnb/latest.json
+          curl -fsSL "$base/catalog-latest/latest.json.sig" -o public-cnb/latest.json.sig
+          cmp catalog-v1.json public-github/catalog-v1.json
+          cmp catalog-v1.json public-cnb/catalog-v1.json
+          cmp catalog-v1.json.sig public-github/catalog-v1.json.sig
+          cmp catalog-v1.json.sig public-cnb/catalog-v1.json.sig
+          cmp latest.json public-github/latest.json
+          cmp latest.json public-cnb/latest.json
+          cmp latest.json.sig public-github/latest.json.sig
+          cmp latest.json.sig public-cnb/latest.json.sig

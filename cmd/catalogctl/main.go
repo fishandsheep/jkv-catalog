@@ -23,6 +23,19 @@ func run(args []string, stdout, stderr io.Writer) int {
 		return 2
 	}
 	switch args[0] {
+	case "public-key":
+		if len(args) != 2 {
+			usage(stderr)
+			return 2
+		}
+		private, err := readKey(args[1], ed25519.PrivateKeySize)
+		if err != nil {
+			fmt.Fprintf(stderr, "public-key: %v\n", err)
+			return 1
+		}
+		public := ed25519.PrivateKey(private).Public().(ed25519.PublicKey)
+		fmt.Fprintln(stdout, base64.StdEncoding.EncodeToString(public))
+		return 0
 	case "assemble":
 		return runAssemble(args, stdout, stderr)
 	case "validate":
@@ -180,6 +193,7 @@ func readKey(path string, expected int) ([]byte, error) {
 
 func usage(out io.Writer) {
 	fmt.Fprintln(out, "usage: catalogctl validate <snapshot>")
+	fmt.Fprintln(out, "       catalogctl public-key <private-key-base64-file>")
 	fmt.Fprintln(out, "       catalogctl build <data.json> <snapshot.json>")
 	fmt.Fprintln(out, "       catalogctl latest <snapshot.json> <asset-name> <latest.json>")
 	fmt.Fprintln(out, "       catalogctl sign <payload> <key-id> <private-key-base64-file> <envelope.json>")
