@@ -1,32 +1,66 @@
 # jkv-catalog
 
-`jkv-catalog` 是 [jkv](https://github.com/fishandsheep/jkv) v0.3 的独立 Catalog 源码与发布仓库。它保存 Provider、Schema、审核数据、签名器和发布 workflow；客户端只下载签名 JSON 与签名文件，永不下载或执行本仓库代码。
+`jkv-catalog` 是 [jkv](https://github.com/fishandsheep/jkv) 的版本清单仓库。普通贡献者通过一个数据 PR 增加新版本或兼容的新工具；维护者审核后发布签名 Snapshot，用户的 jkv 自动读取它。
 
-Catalog 不分发 jkv 二进制，也不镜像 JDK、Maven 或 Gradle。它只声明经过审核的 Candidate、Vendor、Release、Artifact URL、平台、支持等级、可选 SHA-256 和撤销信息。
+Catalog 不保存 JDK、Maven、Gradle 安装包，也不向客户端下发或执行代码、插件、脚本。它只记录已审核的版本、平台、HTTPS 下载地址、归档类型、可选 SHA-256 和撤销信息。
 
-## 当前发布
+## 5 分钟：新增版本
 
-首个真实 Snapshot：[`catalog-v1-000001`](https://github.com/fishandsheep/jkv-catalog/releases/tag/catalog-v1-000001)。
+1. Fork 本仓库，编辑 [`data/catalog-input.json`](data/catalog-input.json)。找到对应 `candidate → vendor → releases`，添加 Release 和当前平台的 Artifact。
+2. 确认 URL 是公开 HTTPS 直链，版本为稳定版；每个 Artifact 有唯一、永久的 `artifact_id`，且指定 `zip`、`tar.gz` 或 `tgz`。
+3. 运行检查并提交 PR：
 
-公开 Release download 根：
-
-```text
-CNB:    https://cnb.cool/fishandsheep/jkv-catalog/-/releases/download
-GitHub: https://github.com/fishandsheep/jkv-catalog/releases/download
+```sh
+go run ./cmd/catalogctl validate data/catalog-input.json
+go test ./...
+go vet ./...
 ```
 
-固定路径：
+4. PR 写明上游来源、版本、支持平台、下载 URL 和 checksum 来源。维护者审核、合并并发布；不要修改已发布 Release 资产。
 
-```text
-<root>/catalog-latest/latest.json
-<root>/catalog-latest/latest.json.sig
-<root>/catalog-v1-000001/catalog-v1.json
-<root>/catalog-v1-000001/catalog-v1.json.sig
+Release 最小形状：
+
+```json
+{
+  "version": "1.2.3",
+  "selector": "1.2.3",
+  "support_tier": "beta",
+  "artifacts": [{
+    "artifact_id": "tool-acme-1.2.3-linux-x64",
+    "archive_type": "tar.gz",
+    "platforms": [{"os": "linux", "arch": "x64"}],
+    "url": "https://downloads.example.org/tool-1.2.3-linux-x64.tar.gz",
+    "checksum": {
+      "algorithm": "sha256",
+      "value": "<64 位 SHA-256>",
+      "source": "upstream",
+      "source_url": "https://downloads.example.org/tool-1.2.3-linux-x64.tar.gz.sha256"
+    }
+  }]
+}
 ```
 
-`latest.json` 是签名指针；不可变 Snapshot 才是安装数据。CNB 网络或 HTTP 失败可回退 GitHub；任一端返回验签、哈希或 schema 错误时客户端必须拒绝，不能回退绕过错误。
+没有上游 SHA-256 也可提交：删除整个 `checksum` 字段，并在 PR 说明原因。不能伪造或填写 Catalog 自行计算的值为上游 checksum。
 
-## 本地验证
+## 新增工具
+
+先确认工具符合通用安装格式：
+
+- 包为公开 HTTPS 的 `zip`、`tar.gz` 或 `tgz`；每个平台显式列一个 Artifact。
+- 解压后只有一个根目录，且可执行文件位于 `bin/`。
+- 不需要安装脚本、插件、注册表修改或额外 PATH 注入。
+
+然后在 `candidates` 添加 Candidate、Vendor、Release、Artifact。`home_env` 可选，且只能是安全的 `*_HOME` 名称，例如 `KOTLIN_HOME`；不得使用 `PATH`、`HOME`、`JAVA_TOOL_OPTIONS`。可直接以现有 Candidate 为模板，替换名称、主页、默认 Vendor 和 Release 数据。
+
+新工具若需要自动发现后续版本，再补充 `internal/provider/` 中受限 Provider、fixture 与测试，并在 `cmd/catalogctl/assemble.go` 注册。手工数据 PR 不需要先写 Provider。
+
+字段约束与完整样例见 [schema](schema/catalog-v1.schema.json) 和 [维护指南](docs/authoring.md)。
+
+## Catalog 与 jkv
+
+v0.3 jkv 验证签名 `latest.json` 和不可变 Snapshot，优先 CNB、网络故障时使用 GitHub 或本机可信缓存。客户端不会执行本仓库代码。已发布 Snapshot 永不改写；数据错误提高 `sequence` 前滚，安全问题新增 `revocations`。
+
+## 维护与发布
 
 ```sh
 go run ./cmd/catalogctl validate data/catalog-input.json
@@ -36,59 +70,4 @@ go test ./...
 go vet ./...
 ```
 
-验证已发布 GitHub/CNB 是否完全同字节：
-
-```sh
-curl -fsSL -o /tmp/github-catalog.json https://github.com/fishandsheep/jkv-catalog/releases/download/catalog-v1-000001/catalog-v1.json
-curl -fsSL -o /tmp/cnb-catalog.json https://cnb.cool/fishandsheep/jkv-catalog/-/releases/download/catalog-v1-000001/catalog-v1.json
-cmp /tmp/github-catalog.json /tmp/cnb-catalog.json
-sha256sum /tmp/github-catalog.json /tmp/cnb-catalog.json
-```
-
-私钥绝不提交。生产私钥只放 GitHub `catalog-publication` Environment secret `CATALOG_ED25519_PRIVATE_KEY_BASE64`。如需从离线私钥文件导出可公开的 32-byte Ed25519 公钥：
-
-```sh
-go run ./cmd/catalogctl public-key /secure/path/catalog-private.base64
-```
-
-将输出值配置为 `fishandsheep/jkv` Repository Variable `CATALOG_ED25519_PUBLIC_KEY_BASE64`，并把同一 `CATALOG_KEY_ID` 配置到两个仓库。jkv 的 v0.3 release workflow 会把这两个公开值编译进二进制；缺失时 v0.3 release 会被拒绝。
-
-## 新增版本
-
-1. 不直接编辑发布资产。修改 `data/catalog-input.json`，或运行 Provider 生成候选数据。
-2. 新 Snapshot 将 `sequence` 增加一；更新 `published_at` 和 `source_commit`。
-3. 对每个新 Artifact 审核 HTTPS URL、平台、archive type、稳定 `artifact_id`、selector、support tier、可选 checksum 与 redirect host。
-4. 执行上方本地验证；提交 PR。普通 CI 会校验 data、单测和 `go vet`。
-5. 合并后，从 `main` 手动触发 **Publish catalog**，选择 `data/catalog-input.json` 且 `dry_run=false`。
-
-已发布 Snapshot 不修改、不删除、不覆盖。数据错误通过更高 sequence 前滚；安全问题在新 Snapshot 增加 `revocations`。
-
-## 新增工具（Candidate）
-
-新工具需先满足通用安装介质约束：
-
-- 归档只能是 `zip`、`tar.gz` 或 `tgz`。
-- 每个 Artifact 必须明确适用平台，URL 为公开 HTTPS 直链。
-- 解压后应有单一顶层目录和 `bin/`；不支持安装后脚本、插件、注册表修改或任意 PATH 注入。
-- Candidate 可声明一个以 `_HOME` 结尾的安全 `home_env`；不得声明 `PATH`、`HOME`、`JAVA_TOOL_OPTIONS` 等保留变量。
-
-实现步骤：
-
-1. 在 `internal/provider/` 增加受限 Provider，保留稳定版过滤、平台选择、排序和 fixture 测试。
-2. 在 `cmd/catalogctl/assemble.go` 注册 Candidate 元数据和默认 Vendor。
-3. 使用 `catalogctl discover <candidate> <os> <arch>` 检查每个平台结果；加入或更新 `data/catalog-input.json`。
-4. 为 Provider 写 fixture、排序和平台测试；PR 说明 URL、checksum、Artifact ID、平台和版本变化。
-5. 合并、审核后按“新增版本”流程发布。
-
-Provider 每日自动发现工作流只创建或更新 `bot/catalog-discovery` 审核 PR；它没有签名秘密、不会自动合并、更不会自动发布。
-
-## 发布配置
-
-`Publish catalog` 只能从 `main` 手动触发，并使用 `catalog-publication` Environment。需要：
-
-- Environment secret：`CATALOG_ED25519_PRIVATE_KEY_BASE64`、`CNB_CATALOG_TOKEN`
-- Environment variable：`CATALOG_KEY_ID`、`CNB_CATALOG_REPOSITORY`、`CNB_CATALOG_BASE_URL`
-
-发布顺序：validate → deterministic build → sign → GitHub/CNB draft → API hash/size 验证 → 两端 `latest` → 发布 immutable Release → 从公开 URL 逐字节比较 GitHub/CNB。
-
-CNB `CNB_CATALOG_BASE_URL` 必须是上文的 Release download 根，不能填仓库主页或单个 `latest.json` URL。
+每日发现任务只创建审核 PR，不持有签名密钥、不会自动发布。合并后维护者从 `main` 手动运行 **Publish catalog**。私钥仅在 GitHub `catalog-publication` Environment 中使用。完整步骤见 [发布 workflow](.github/workflows/publish.yml)。
