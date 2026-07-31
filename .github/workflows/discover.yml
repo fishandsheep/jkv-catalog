@@ -1,0 +1,61 @@
+name: Discover catalog updates
+
+on:
+  schedule:
+    # 03:17 Asia/Shanghai. GitHub schedules use UTC.
+    - cron: '17 19 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: catalog-discovery
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.x'
+      - name: Discover reviewed sources
+        id: discovery
+        env:
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: |
+          sequence="$(jq -er '.sequence + 1' data/catalog-input.json)"
+          published_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          go run ./cmd/catalogctl assemble "$sequence" "$published_at" "$SOURCE_COMMIT" generated-catalog-input.json
+          go run ./cmd/catalogctl validate generated-catalog-input.json
+          jq -S 'del(.sequence, .published_at, .source_commit)' data/catalog-input.json > current-semantic.json
+          jq -S 'del(.sequence, .published_at, .source_commit)' generated-catalog-input.json > generated-semantic.json
+          if cmp -s current-semantic.json generated-semantic.json; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          mv generated-catalog-input.json data/catalog-input.json
+          echo 'changed=true' >> "$GITHUB_OUTPUT"
+      - name: Create or update rolling review PR
+        if: steps.discovery.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: bot/catalog-discovery
+        run: |
+          git config user.name 'jkv-catalog[bot]'
+          git config user.email 'jkv-catalog[bot]@users.noreply.github.com'
+          git switch -C "$BRANCH"
+          git add data/catalog-input.json
+          git commit -m 'data: refresh discovered catalog'
+          git push --force-with-lease origin "$BRANCH"
+          pr="$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')"
+          if test -n "$pr"; then
+            gh pr edit "$pr" --body '自动发现到 Catalog 语义变化。请审核新增/删除 Release、URL、平台、selector 与 checksum；此 PR 不持有签名或发布权限。'
+          else
+            gh pr create --base main --head "$BRANCH" --title 'data: refresh discovered catalog' --body '自动发现到 Catalog 语义变化。请审核新增/删除 Release、URL、平台、selector 与 checksum；此 PR 不持有签名或发布权限。'
+          fi
