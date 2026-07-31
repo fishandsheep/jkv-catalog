@@ -70,3 +70,10 @@ func TestBuildLatestBindsSnapshotHashAndSequence(t *testing.T) {
 		t.Fatalf("latest = %#v", latest)
 	}
 }
+
+func TestValidateRejectsMilestoneRelease(t *testing.T) {
+	data := []byte(`{"schema_version":1,"sequence":1,"published_at":"2026-07-30T00:00:00Z","source_commit":"0123456789012345678901234567890123456789","min_client_version":"0.3.0-beta.1","candidates":[{"name":"springboot","display_name":"Spring Boot","description":"CLI","homepage":"https://spring.io/","default_vendor":"spring","vendors":[{"name":"spring","display_name":"Spring","releases":[{"version":"4.1.0-M4","selector":"4.1.0-M4","support_tier":"beta","artifacts":[{"artifact_id":"springboot-m4","archive_type":"zip","platforms":[{"os":"linux","arch":"x64"}],"url":"https://example.test/spring.zip"}]}]}]}]}`)
+	if err := Validate(data); err == nil {
+		t.Fatal("milestone release accepted")
+	}
+}

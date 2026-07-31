@@ -13,7 +13,11 @@ import (
 	"time"
 )
 
-var gitSHA = regexp.MustCompile(`^[0-9a-fA-F]{40}$`)
+var (
+	gitSHA             = regexp.MustCompile(`^[0-9a-fA-F]{40}$`)
+	milestoneVersionRE = regexp.MustCompile(`(^|[.-])M[0-9]`)
+	eaVersionRE        = regexp.MustCompile(`(^|[.+_-])EA([.+_-]|$)`)
+)
 
 // Snapshot is Catalog v1's signed payload. Field order is deliberately stable.
 type Snapshot struct {
@@ -158,7 +162,7 @@ func validate(value Snapshot) error {
 				if release.Version == "" || release.Selector == "" || (release.SupportTier != "core" && release.SupportTier != "beta") || len(release.Artifacts) == 0 {
 					return fmt.Errorf("invalid release %q", release.Selector)
 				}
-				if strings.Contains(strings.ToLower(release.Version), "snapshot") || strings.Contains(strings.ToLower(release.Version), "-rc") {
+				if !stableReleaseVersion(release.Version) {
 					return fmt.Errorf("release %q is not stable", release.Version)
 				}
 				if versions[release.Version] {
@@ -212,6 +216,14 @@ func validate(value Snapshot) error {
 		}
 	}
 	return nil
+}
+
+func stableReleaseVersion(version string) bool {
+	value := strings.ToUpper(version)
+	return !strings.Contains(value, "SNAPSHOT") && !strings.Contains(value, "RC") &&
+		!strings.Contains(value, "MILESTONE") && !milestoneVersionRE.MatchString(value) &&
+		!strings.Contains(value, "ALPHA") && !strings.Contains(value, "BETA") &&
+		!eaVersionRE.MatchString(value)
 }
 
 func https(raw string) error {

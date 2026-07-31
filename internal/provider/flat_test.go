@@ -9,7 +9,7 @@ import (
 
 func TestFlatArchiveDiscovererFiltersUnstableAndSelectsPlatform(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		_, _ = w.Write([]byte(`<a href="gradle-8.14.3-bin.zip">ok</a><a href="gradle-9.0-rc1-bin.zip">rc</a><a href="gradle-8.14.2-bin.zip">old</a>`))
+		_, _ = w.Write([]byte(`<a href="gradle-8.14.3-bin.zip">ok</a><a href="gradle-9.0-rc1-bin.zip">rc</a><a href="gradle-9.1-M1-bin.zip">milestone</a><a href="gradle-8.14.2-bin.zip">old</a>`))
 	}))
 	defer server.Close()
 
@@ -20,5 +20,13 @@ func TestFlatArchiveDiscovererFiltersUnstableAndSelectsPlatform(t *testing.T) {
 	}
 	if len(got) != 2 || got[0].Version != "8.14.3" || got[0].ArchiveType != "zip" {
 		t.Fatalf("discoveries = %#v", got)
+	}
+}
+
+func TestStableRejectsMilestoneVersion(t *testing.T) {
+	for _, version := range []string{"4.1.0-M4", "4.1.0-m4", "1.0.0-MILESTONE"} {
+		if stable(version) {
+			t.Fatalf("milestone version accepted: %q", version)
+		}
 	}
 }

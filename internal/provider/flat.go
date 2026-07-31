@@ -104,7 +104,10 @@ func (source FlatArchive) Discover(ctx context.Context, platform Platform) ([]Di
 
 func stable(version string) bool {
 	value := strings.ToUpper(version)
-	return !strings.Contains(value, "SNAPSHOT") && !strings.Contains(value, "RC") && !strings.Contains(value, "BETA") && !strings.Contains(value, "ALPHA") && !strings.Contains(value, "MILESTONE") && !strings.Contains(value, "-EA")
+	return !strings.Contains(value, "SNAPSHOT") && !strings.Contains(value, "RC") &&
+		!strings.Contains(value, "MILESTONE") && !regexp.MustCompile(`(^|[.-])M[0-9]`).MatchString(value) &&
+		!strings.Contains(value, "ALPHA") && !strings.Contains(value, "BETA") &&
+		!regexp.MustCompile(`(^|[.+_-])EA([.+_-]|$)`).MatchString(value)
 }
 func archiveFor(platform Platform, suffix string) bool {
 	return platform.OS != "windows" || suffix == ".zip"
