@@ -18,12 +18,13 @@ jobs:
   discover:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: '1.24.x'
+          cache: false
       - name: Discover reviewed sources
         id: discovery
         env:
@@ -44,7 +45,11 @@ jobs:
       - name: Create or update rolling review PR
         if: steps.discovery.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          # Use a dedicated PAT/App token when repository settings disallow
+          # GITHUB_TOKEN from creating pull requests. Otherwise use the
+          # built-in token and enable that setting in repository Actions policy.
+          GH_TOKEN: ${{ secrets.CATALOG_DISCOVERY_TOKEN || github.token }}
+          REPOSITORY: ${{ github.repository }}
           BRANCH: bot/catalog-discovery
         run: |
           git config user.name 'jkv-catalog[bot]'
@@ -53,9 +58,15 @@ jobs:
           git add data/catalog-input.json
           git commit -m 'data: refresh discovered catalog'
           git push --force-with-lease origin "$BRANCH"
-          pr="$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')"
+          pr="$(gh pr list --repo "$REPOSITORY" --head "$BRANCH" --state open --json number --jq '.[0].number // empty')"
           if test -n "$pr"; then
-            gh pr edit "$pr" --body '自动发现到 Catalog 语义变化。请审核新增/删除 Release、URL、平台、selector 与 checksum；此 PR 不持有签名或发布权限。'
+            if ! gh pr edit "$pr" --repo "$REPOSITORY" --body '自动发现到 Catalog 语义变化。请审核新增/删除 Release、URL、平台、selector 与 checksum；此 PR 不持有签名或发布权限。'; then
+              echo '::error::无法更新 rolling review PR。请启用 Actions 创建/批准 PR，或配置 CATALOG_DISCOVERY_TOKEN。'
+              exit 1
+            fi
           else
-            gh pr create --base main --head "$BRANCH" --title 'data: refresh discovered catalog' --body '自动发现到 Catalog 语义变化。请审核新增/删除 Release、URL、平台、selector 与 checksum；此 PR 不持有签名或发布权限。'
+            if ! gh pr create --repo "$REPOSITORY" --base main --head "$BRANCH" --title 'data: refresh discovered catalog' --body '自动发现到 Catalog 语义变化。请审核新增/删除 Release、URL、平台、selector 与 checksum；此 PR 不持有签名或发布权限。'; then
+              echo '::error::无法创建 rolling review PR。请在 Settings > Actions > General 开启 Allow GitHub Actions to create and approve pull requests，或配置具备 contents:write 与 pull_requests:write 的 CATALOG_DISCOVERY_TOKEN。'
+              exit 1
+            fi
           fi

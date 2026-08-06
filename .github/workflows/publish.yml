@@ -27,10 +27,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: catalog-publication
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
         with:
           go-version: '1.24.x'
+          cache: false
       - name: Validate reviewed input
         env:
           DATA_FILE: ${{ inputs.data_file }}
