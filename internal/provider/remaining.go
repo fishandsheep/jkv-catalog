@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"net/http"
 	"regexp"
+	"sort"
 	"strings"
 )
 
@@ -113,12 +114,28 @@ func (source SpringBoot) Discover(ctx context.Context, platform Platform) ([]Dis
 	if err := xml.Unmarshal(body, &metadata); err != nil {
 		return nil, err
 	}
-	var out []Discovery
+	branchRE := regexp.MustCompile(`^([0-9]+\.[0-9]+)\.`)
+	latestByBranch := map[string]string{}
 	for _, version := range metadata.Versions {
-		if stable(version) {
-			name := "spring-boot-cli-" + version + "-bin.zip"
-			out = append(out, Discovery{Candidate: "springboot", Vendor: "spring", Version: version, URL: source.RootURL + version + "/" + name, ArchiveType: "zip", Platform: platform})
+		match := branchRE.FindStringSubmatch(version)
+		if len(match) != 2 || !stable(version) {
+			continue
 		}
+		if current := latestByBranch[match[1]]; current == "" || compareNumericVersions(version, current) > 0 {
+			latestByBranch[match[1]] = version
+		}
+	}
+	versions := make([]string, 0, len(latestByBranch))
+	for _, version := range latestByBranch {
+		versions = append(versions, version)
+	}
+	sort.Slice(versions, func(left, right int) bool {
+		return compareNumericVersions(versions[left], versions[right]) > 0
+	})
+	var out []Discovery
+	for _, version := range versions {
+		name := "spring-boot-cli-" + version + "-bin.zip"
+		out = append(out, Discovery{Candidate: "springboot", Vendor: "spring", Version: version, URL: source.RootURL + version + "/" + name, ArchiveType: "zip", Platform: platform})
 	}
 	return out, nil
 }
