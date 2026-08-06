@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"regexp"
+	"sort"
 	"strings"
 )
 
@@ -132,15 +133,39 @@ func (source BiSheng) Discover(ctx context.Context, platform Platform) ([]Discov
 	if err != nil {
 		return nil, err
 	}
-	re := regexp.MustCompile(`^bisheng-jdk-?((?:8u[0-9]+|(?:11|17|21|25)\.[0-9.]+)(?:-b[0-9]+)?)-linux-` + regexp.QuoteMeta(platform.Arch) + `\.tar\.gz$`)
+	re := regexp.MustCompile(`^bisheng-jdk-?((8u[0-9]+|((?:11|17|21|25))\.[0-9.]+)(?:-b[0-9]+)?)-linux-(x64|aarch64)\.tar\.gz$`)
+	latestByMajor := map[string]string{}
+	for _, link := range links(body) {
+		match := re.FindStringSubmatch(link)
+		if len(match) != 5 || strings.Contains(link, "debug") || strings.Contains(link, "fusion") {
+			continue
+		}
+		major := match[3]
+		if major == "" {
+			major = "8"
+		}
+		if current := latestByMajor[major]; current == "" || compareNumericVersions(match[1], current) > 0 {
+			latestByMajor[major] = match[1]
+		}
+	}
 	var out []Discovery
 	for _, link := range links(body) {
 		match := re.FindStringSubmatch(link)
-		if len(match) != 2 || strings.Contains(link, "debug") || strings.Contains(link, "fusion") {
+		if len(match) != 5 || match[4] != platform.Arch || strings.Contains(link, "debug") || strings.Contains(link, "fusion") {
+			continue
+		}
+		major := match[3]
+		if major == "" {
+			major = "8"
+		}
+		if latestByMajor[major] != match[1] {
 			continue
 		}
 		out = append(out, Discovery{Candidate: "java", Vendor: "bisheng", Version: match[1], URL: resolve(source.BaseURL, link), ArchiveType: "tar.gz", Platform: platform})
 	}
+	sort.Slice(out, func(left, right int) bool {
+		return compareNumericVersions(out[left].Version, out[right].Version) > 0
+	})
 	return out, nil
 }
 

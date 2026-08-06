@@ -33,3 +33,5 @@ Release 身份是 `candidate + vendor + version`，`selector` 在 Candidate 内�
 - [ ] PR 描述包括来源、变更版本、平台影响与任何重定向。
 
 新增 Provider 时另需 fixture、稳定版过滤、排序、全平台测试。Provider 只能在 Catalog 发布端运行，绝不作为客户端数据发布。
+
+自动发现对 Huawei BiSheng JDK 每个 Java 大版本只保留最新发行版，对 Spring Boot CLI 每个 `major.minor` 分支只保留最新稳定 patch。版本按数字段比较（例如 `3.5.16` 新于 `3.5.9`），不得依赖字符串排序。
