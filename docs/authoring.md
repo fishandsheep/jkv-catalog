@@ -35,3 +35,14 @@ Release 身份是 `candidate + vendor + version`，`selector` 在 Candidate 内�
 新增 Provider 时另需 fixture、稳定版过滤、排序、全平台测试。Provider 只能在 Catalog 发布端运行，绝不作为客户端数据发布。
 
 自动发现对 Huawei BiSheng JDK 每个 Java 大版本只保留最新发行版，对 Spring Boot CLI 每个 `major.minor` 分支只保留最新稳定 patch。版本按数字段比较（例如 `3.5.16` 新于 `3.5.9`），不得依赖字符串排序。
+
+## 自动发现
+
+`.github/workflows/discover.yml` 会把发现到的语义变化推送到
+`bot/catalog-discovery`，并创建或更新 rolling review PR。若使用内置
+`GITHUB_TOKEN`，需要在仓库 `Settings > Actions > General > Workflow
+permissions` 开启 `Allow GitHub Actions to create and approve pull requests`。
+
+若仓库策略不允许该权限，添加 Actions secret `CATALOG_DISCOVERY_TOKEN`，
+使用具备该仓库 `Contents: Read and write` 与 `Pull requests: Read and write`
+权限的 fine-grained token 或 GitHub App token。workflow 会优先使用这个 token。
