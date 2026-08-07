@@ -58,7 +58,10 @@ jobs:
           git add data/catalog-input.json
           git commit -m 'data: refresh discovered catalog'
           git push --force-with-lease origin "$BRANCH"
-          pr="$(gh pr list --repo "$REPOSITORY" --head "$BRANCH" --state open --json number --jq '.[0].number // empty')"
+          if ! pr="$(gh pr list --repo "$REPOSITORY" --head "$BRANCH" --state open --json number --jq '.[0].number // empty')"; then
+            echo '::error::无法读取 rolling review PR。请确认 CATALOG_DISCOVERY_TOKEN 具备 pull_requests:read 权限。'
+            exit 1
+          fi
           if test -n "$pr"; then
             if ! gh pr edit "$pr" --repo "$REPOSITORY" --body '自动发现到 Catalog 语义变化。请审核新增/删除 Release、URL、平台、selector 与 checksum；此 PR 不持有签名或发布权限。'; then
               echo '::error::无法更新 rolling review PR。请启用 Actions 创建/批准 PR，或配置 CATALOG_DISCOVERY_TOKEN。'
