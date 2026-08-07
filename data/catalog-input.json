@@ -2,7 +2,7 @@
   "schema_version": 1,
   "sequence": 4,
   "published_at": "2026-08-07T00:44:45Z",
-  "source_commit": "942c884f250f97caa1a1dbe915b15df0059951b1",
+  "source_commit": "785cc8e95843ad96301bf46099e1fd2d00062ae8",
   "min_client_version": "0.3.0-beta.1",
   "candidates": [
     {
@@ -369,17 +369,6 @@
                     }
                   ],
                   "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/8.29.28/Alibaba_Dragonwell_Standard_8.29.28_x64_windows.zip"
-                },
-                {
-                  "artifact_id": "java-dragonwell-8.29.28-windows-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/8.29.28/Alibaba_Dragonwell_Standard_8.29.28_aarch64_linux.tar.gz"
                 }
               ]
             },
@@ -420,17 +409,6 @@
                     }
                   ],
                   "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.4.0.4%2B7-test-dragonwell_standard/Alibaba_Dragonwell_Standard_25.0.4.0.4.7_x64_windows.zip"
-                },
-                {
-                  "artifact_id": "java-dragonwell-25.0.4.0.4.7-windows-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.4.0.4%2B7-test-dragonwell_standard/Alibaba_Dragonwell_Standard_25.0.4.0.4.7_aarch64_linux.tar.gz"
                 }
               ]
             },
@@ -471,17 +449,6 @@
                     }
                   ],
                   "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/21.0.11.0.11%2B10/Alibaba_Dragonwell_Standard_21.0.11.0.11.10_x64_windows.zip"
-                },
-                {
-                  "artifact_id": "java-dragonwell-21.0.11.0.11.10-windows-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/21.0.11.0.11%2B10/Alibaba_Dragonwell_Standard_21.0.11.0.11.10_aarch64_linux.tar.gz"
                 }
               ]
             },
@@ -522,17 +489,6 @@
                     }
                   ],
                   "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/17.0.19.0.20%2B10/Alibaba_Dragonwell_Standard_17.0.19.0.20.10_x64_windows.zip"
-                },
-                {
-                  "artifact_id": "java-dragonwell-17.0.19.0.20.10-windows-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/17.0.19.0.20%2B10/Alibaba_Dragonwell_Standard_17.0.19.0.20.10_aarch64_linux.tar.gz"
                 }
               ]
             },
@@ -573,17 +529,6 @@
                     }
                   ],
                   "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/11.0.31.27.11/Alibaba_Dragonwell_Standard_11.0.31.27.11_x64_windows.zip"
-                },
-                {
-                  "artifact_id": "java-dragonwell-11.0.31.27.11-windows-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/11.0.31.27.11/Alibaba_Dragonwell_Standard_11.0.31.27.11_aarch64_linux.tar.gz"
                 }
               ]
             }
