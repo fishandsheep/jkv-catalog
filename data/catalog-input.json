@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "sequence": 3,
-  "published_at": "2026-08-06T18:07:22Z",
-  "source_commit": "6594af5104c7447527246b29ed9913c2c9e0ced8",
+  "sequence": 4,
+  "published_at": "2026-08-07T00:44:45Z",
+  "source_commit": "785cc8e95843ad96301bf46099e1fd2d00062ae8",
   "min_client_version": "0.3.0-beta.1",
   "candidates": [
     {
@@ -17,12 +17,12 @@
           "display_name": "Eclipse Temurin",
           "releases": [
             {
-              "version": "8u492b09",
-              "selector": "8u492b09-temurin",
+              "version": "8u502b07",
+              "selector": "8u502b07-temurin",
               "support_tier": "core",
               "artifacts": [
                 {
-                  "artifact_id": "java-temurin-8u492b09-linux-x64",
+                  "artifact_id": "java-temurin-8u502b07-linux-x64",
                   "archive_type": "tar.gz",
                   "platforms": [
                     {
@@ -30,10 +30,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/8/jdk/x64/linux/OpenJDK8U-jdk_x64_linux_hotspot_8u492b09.tar.gz"
+                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/8/jdk/x64/linux/OpenJDK8U-jdk_x64_linux_hotspot_8u502b07.tar.gz"
                 },
                 {
-                  "artifact_id": "java-temurin-8u492b09-linux-aarch64",
+                  "artifact_id": "java-temurin-8u502b07-linux-aarch64",
                   "archive_type": "tar.gz",
                   "platforms": [
                     {
@@ -41,10 +41,10 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/8/jdk/aarch64/linux/OpenJDK8U-jdk_aarch64_linux_hotspot_8u492b09.tar.gz"
+                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/8/jdk/aarch64/linux/OpenJDK8U-jdk_aarch64_linux_hotspot_8u502b07.tar.gz"
                 },
                 {
-                  "artifact_id": "java-temurin-8u492b09-darwin-x64",
+                  "artifact_id": "java-temurin-8u502b07-darwin-x64",
                   "archive_type": "tar.gz",
                   "platforms": [
                     {
@@ -52,10 +52,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/8/jdk/x64/mac/OpenJDK8U-jdk_x64_mac_hotspot_8u492b09.tar.gz"
+                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/8/jdk/x64/mac/OpenJDK8U-jdk_x64_mac_hotspot_8u502b07.tar.gz"
                 },
                 {
-                  "artifact_id": "java-temurin-8u492b09-windows-x64",
+                  "artifact_id": "java-temurin-8u502b07-windows-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -63,7 +63,7 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/8/jdk/x64/windows/OpenJDK8U-jdk_x64_windows_hotspot_8u492b09.zip"
+                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/8/jdk/x64/windows/OpenJDK8U-jdk_x64_windows_hotspot_8u502b07.zip"
                 }
               ]
             },
@@ -168,6 +168,17 @@
                   "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/21/jdk/x64/mac/OpenJDK21U-jdk_x64_mac_hotspot_21.0.12_8.tar.gz"
                 },
                 {
+                  "artifact_id": "java-temurin-21.0.12-8-darwin-aarch64",
+                  "archive_type": "tar.gz",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/21/jdk/aarch64/mac/OpenJDK21U-jdk_aarch64_mac_hotspot_21.0.12_8.tar.gz"
+                },
+                {
                   "artifact_id": "java-temurin-21.0.12-8-windows-x64",
                   "archive_type": "zip",
                   "platforms": [
@@ -177,27 +188,9 @@
                     }
                   ],
                   "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/21/jdk/x64/windows/OpenJDK21U-jdk_x64_windows_hotspot_21.0.12_8.zip"
-                }
-              ]
-            },
-            {
-              "version": "21.0.11+10",
-              "selector": "21.0.11+10-temurin",
-              "support_tier": "core",
-              "artifacts": [
-                {
-                  "artifact_id": "java-temurin-21.0.11-10-darwin-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "darwin",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/21/jdk/aarch64/mac/OpenJDK21U-jdk_aarch64_mac_hotspot_21.0.11_10.tar.gz"
                 },
                 {
-                  "artifact_id": "java-temurin-21.0.11-10-windows-aarch64",
+                  "artifact_id": "java-temurin-21.0.12-8-windows-aarch64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -205,7 +198,7 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/21/jdk/aarch64/windows/OpenJDK21U-jdk_aarch64_windows_hotspot_21.0.11_10.zip"
+                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/21/jdk/aarch64/windows/OpenJDK21U-jdk_aarch64_windows_hotspot_21.0.12_8.zip"
                 }
               ]
             },
@@ -248,6 +241,17 @@
                   "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/17/jdk/x64/mac/OpenJDK17U-jdk_x64_mac_hotspot_17.0.20_8.tar.gz"
                 },
                 {
+                  "artifact_id": "java-temurin-17.0.20-8-darwin-aarch64",
+                  "archive_type": "tar.gz",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/17/jdk/aarch64/mac/OpenJDK17U-jdk_aarch64_mac_hotspot_17.0.20_8.tar.gz"
+                },
+                {
                   "artifact_id": "java-temurin-17.0.20-8-windows-x64",
                   "archive_type": "zip",
                   "platforms": [
@@ -257,24 +261,6 @@
                     }
                   ],
                   "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/17/jdk/x64/windows/OpenJDK17U-jdk_x64_windows_hotspot_17.0.20_8.zip"
-                }
-              ]
-            },
-            {
-              "version": "17.0.19+10",
-              "selector": "17.0.19+10-temurin",
-              "support_tier": "core",
-              "artifacts": [
-                {
-                  "artifact_id": "java-temurin-17.0.19-10-darwin-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "darwin",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/17/jdk/aarch64/mac/OpenJDK17U-jdk_aarch64_mac_hotspot_17.0.19_10.tar.gz"
                 }
               ]
             },
@@ -306,6 +292,28 @@
                   "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/11/jdk/aarch64/linux/OpenJDK11U-jdk_aarch64_linux_hotspot_11.0.32_9.tar.gz"
                 },
                 {
+                  "artifact_id": "java-temurin-11.0.32-9-darwin-x64",
+                  "archive_type": "tar.gz",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/11/jdk/x64/mac/OpenJDK11U-jdk_x64_mac_hotspot_11.0.32_9.tar.gz"
+                },
+                {
+                  "artifact_id": "java-temurin-11.0.32-9-darwin-aarch64",
+                  "archive_type": "tar.gz",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/11/jdk/aarch64/mac/OpenJDK11U-jdk_aarch64_mac_hotspot_11.0.32_9.tar.gz"
+                },
+                {
                   "artifact_id": "java-temurin-11.0.32-9-windows-x64",
                   "archive_type": "zip",
                   "platforms": [
@@ -315,35 +323,6 @@
                     }
                   ],
                   "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/11/jdk/x64/windows/OpenJDK11U-jdk_x64_windows_hotspot_11.0.32_9.zip"
-                }
-              ]
-            },
-            {
-              "version": "11.0.31+11",
-              "selector": "11.0.31+11-temurin",
-              "support_tier": "core",
-              "artifacts": [
-                {
-                  "artifact_id": "java-temurin-11.0.31-11-darwin-x64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "darwin",
-                      "arch": "x64"
-                    }
-                  ],
-                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/11/jdk/x64/mac/OpenJDK11U-jdk_x64_mac_hotspot_11.0.31_11.tar.gz"
-                },
-                {
-                  "artifact_id": "java-temurin-11.0.31-11-darwin-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "darwin",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/11/jdk/aarch64/mac/OpenJDK11U-jdk_aarch64_mac_hotspot_11.0.31_11.tar.gz"
                 }
               ]
             }
@@ -390,27 +369,16 @@
                     }
                   ],
                   "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/8.29.28/Alibaba_Dragonwell_Standard_8.29.28_x64_windows.zip"
-                },
-                {
-                  "artifact_id": "java-dragonwell-8.29.28-windows-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/8.29.28/Alibaba_Dragonwell_Standard_8.29.28_aarch64_linux.tar.gz"
                 }
               ]
             },
             {
-              "version": "25.0.3.0.3.9",
-              "selector": "25.0.3.0.3.9-dragonwell",
+              "version": "25.0.4.0.4.7",
+              "selector": "25.0.4.0.4.7-dragonwell",
               "support_tier": "beta",
               "artifacts": [
                 {
-                  "artifact_id": "java-dragonwell-25.0.3.0.3.9-linux-x64",
+                  "artifact_id": "java-dragonwell-25.0.4.0.4.7-linux-x64",
                   "archive_type": "tar.gz",
                   "platforms": [
                     {
@@ -418,10 +386,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.3.0.3%2B9/Alibaba_Dragonwell_Standard_25.0.3.0.3.9_x64_linux.tar.gz"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.4.0.4%2B7-test-dragonwell_standard/Alibaba_Dragonwell_Standard_25.0.4.0.4.7_x64_linux.tar.gz"
                 },
                 {
-                  "artifact_id": "java-dragonwell-25.0.3.0.3.9-linux-aarch64",
+                  "artifact_id": "java-dragonwell-25.0.4.0.4.7-linux-aarch64",
                   "archive_type": "tar.gz",
                   "platforms": [
                     {
@@ -429,10 +397,10 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.3.0.3%2B9/Alibaba_Dragonwell_Standard_25.0.3.0.3.9_aarch64_linux.tar.gz"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.4.0.4%2B7-test-dragonwell_standard/Alibaba_Dragonwell_Standard_25.0.4.0.4.7_aarch64_linux.tar.gz"
                 },
                 {
-                  "artifact_id": "java-dragonwell-25.0.3.0.3.9-windows-x64",
+                  "artifact_id": "java-dragonwell-25.0.4.0.4.7-windows-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -440,18 +408,7 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.3.0.3%2B9/Alibaba_Dragonwell_Standard_25.0.3.0.3.9_x64_windows.zip"
-                },
-                {
-                  "artifact_id": "java-dragonwell-25.0.3.0.3.9-windows-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.3.0.3%2B9/Alibaba_Dragonwell_Standard_25.0.3.0.3.9_aarch64_linux.tar.gz"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.4.0.4%2B7-test-dragonwell_standard/Alibaba_Dragonwell_Standard_25.0.4.0.4.7_x64_windows.zip"
                 }
               ]
             },
@@ -492,17 +449,6 @@
                     }
                   ],
                   "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/21.0.11.0.11%2B10/Alibaba_Dragonwell_Standard_21.0.11.0.11.10_x64_windows.zip"
-                },
-                {
-                  "artifact_id": "java-dragonwell-21.0.11.0.11.10-windows-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/21.0.11.0.11%2B10/Alibaba_Dragonwell_Standard_21.0.11.0.11.10_aarch64_linux.tar.gz"
                 }
               ]
             },
@@ -543,17 +489,6 @@
                     }
                   ],
                   "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/17.0.19.0.20%2B10/Alibaba_Dragonwell_Standard_17.0.19.0.20.10_x64_windows.zip"
-                },
-                {
-                  "artifact_id": "java-dragonwell-17.0.19.0.20.10-windows-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/17.0.19.0.20%2B10/Alibaba_Dragonwell_Standard_17.0.19.0.20.10_aarch64_linux.tar.gz"
                 }
               ]
             },
@@ -594,17 +529,6 @@
                     }
                   ],
                   "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/11.0.31.27.11/Alibaba_Dragonwell_Standard_11.0.31.27.11_x64_windows.zip"
-                },
-                {
-                  "artifact_id": "java-dragonwell-11.0.31.27.11-windows-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/11.0.31.27.11/Alibaba_Dragonwell_Standard_11.0.31.27.11_aarch64_linux.tar.gz"
                 }
               ]
             }
@@ -833,6 +757,79 @@
           "name": "gradle",
           "display_name": "Gradle",
           "releases": [
+            {
+              "version": "9.7.0",
+              "selector": "9.7.0",
+              "support_tier": "core",
+              "artifacts": [
+                {
+                  "artifact_id": "gradle-gradle-9.7.0-linux-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "linux",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.7.0-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.7.0-linux-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "linux",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.7.0-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.7.0-darwin-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.7.0-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.7.0-darwin-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.7.0-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.7.0-windows-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "windows",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.7.0-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.7.0-windows-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "windows",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.7.0-bin.zip"
+                }
+              ]
+            },
             {
               "version": "9.6.1",
               "selector": "9.6.1",
@@ -13274,12 +13271,12 @@
           "display_name": "Apache",
           "releases": [
             {
-              "version": "5.0.7",
-              "selector": "5.0.7",
+              "version": "5.0.8",
+              "selector": "5.0.8",
               "support_tier": "beta",
               "artifacts": [
                 {
-                  "artifact_id": "groovy-apache-5.0.7-linux-x64",
+                  "artifact_id": "groovy-apache-5.0.8-linux-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13287,10 +13284,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.7/distribution/apache-groovy-binary-5.0.7.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.8/distribution/apache-groovy-binary-5.0.8.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.0.7-linux-aarch64",
+                  "artifact_id": "groovy-apache-5.0.8-linux-aarch64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13298,10 +13295,10 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.7/distribution/apache-groovy-binary-5.0.7.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.8/distribution/apache-groovy-binary-5.0.8.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.0.7-darwin-x64",
+                  "artifact_id": "groovy-apache-5.0.8-darwin-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13309,10 +13306,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.7/distribution/apache-groovy-binary-5.0.7.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.8/distribution/apache-groovy-binary-5.0.8.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.0.7-darwin-aarch64",
+                  "artifact_id": "groovy-apache-5.0.8-darwin-aarch64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13320,10 +13317,10 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.7/distribution/apache-groovy-binary-5.0.7.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.8/distribution/apache-groovy-binary-5.0.8.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.0.7-windows-x64",
+                  "artifact_id": "groovy-apache-5.0.8-windows-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13331,10 +13328,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.7/distribution/apache-groovy-binary-5.0.7.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.8/distribution/apache-groovy-binary-5.0.8.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.0.7-windows-aarch64",
+                  "artifact_id": "groovy-apache-5.0.8-windows-aarch64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13342,17 +13339,17 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.7/distribution/apache-groovy-binary-5.0.7.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.8/distribution/apache-groovy-binary-5.0.8.zip"
                 }
               ]
             },
             {
-              "version": "4.0.32",
-              "selector": "4.0.32",
+              "version": "4.0.33",
+              "selector": "4.0.33",
               "support_tier": "beta",
               "artifacts": [
                 {
-                  "artifact_id": "groovy-apache-4.0.32-linux-x64",
+                  "artifact_id": "groovy-apache-4.0.33-linux-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13360,10 +13357,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/4.0.32/distribution/apache-groovy-binary-4.0.32.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/4.0.33/distribution/apache-groovy-binary-4.0.33.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-4.0.32-linux-aarch64",
+                  "artifact_id": "groovy-apache-4.0.33-linux-aarch64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13371,10 +13368,10 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/4.0.32/distribution/apache-groovy-binary-4.0.32.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/4.0.33/distribution/apache-groovy-binary-4.0.33.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-4.0.32-darwin-x64",
+                  "artifact_id": "groovy-apache-4.0.33-darwin-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13382,10 +13379,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/4.0.32/distribution/apache-groovy-binary-4.0.32.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/4.0.33/distribution/apache-groovy-binary-4.0.33.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-4.0.32-darwin-aarch64",
+                  "artifact_id": "groovy-apache-4.0.33-darwin-aarch64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13393,10 +13390,10 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/4.0.32/distribution/apache-groovy-binary-4.0.32.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/4.0.33/distribution/apache-groovy-binary-4.0.33.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-4.0.32-windows-x64",
+                  "artifact_id": "groovy-apache-4.0.33-windows-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13404,10 +13401,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/4.0.32/distribution/apache-groovy-binary-4.0.32.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/4.0.33/distribution/apache-groovy-binary-4.0.33.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-4.0.32-windows-aarch64",
+                  "artifact_id": "groovy-apache-4.0.33-windows-aarch64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13415,7 +13412,7 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/4.0.32/distribution/apache-groovy-binary-4.0.32.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/4.0.33/distribution/apache-groovy-binary-4.0.33.zip"
                 }
               ]
             },

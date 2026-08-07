@@ -84,7 +84,7 @@ func (source Dragonwell) Discover(ctx context.Context, platform Platform) ([]Dis
 	if source.URL == "" {
 		source = DefaultDragonwell()
 	}
-	if platform.OS == "darwin" {
+	if platform.OS == "darwin" || (platform.OS == "windows" && platform.Arch != "x64") {
 		return nil, nil
 	}
 	body, err := (Maven{HTTP: source.HTTPClient}).get(ctx, source.URL)
@@ -100,10 +100,10 @@ func (source Dragonwell) Discover(ctx context.Context, platform Platform) ([]Dis
 	for _, major := range []string{"8", "11", "17", "21", "25"} {
 		version, _ := standard["version"+major].(string)
 		key := "xurl" + major
-		if platform.Arch == "aarch64" {
-			key = "aurl" + major
-		} else if platform.OS == "windows" {
+		if platform.OS == "windows" {
 			key = "wurl" + major
+		} else if platform.Arch == "aarch64" {
+			key = "aurl" + major
 		}
 		raw, _ := standard[key].(string)
 		if version != "" && version != "0" && raw != "" {
