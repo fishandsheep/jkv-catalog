@@ -28,7 +28,7 @@ var initialCandidates = []candidateMeta{
 }
 
 func assemble(ctx context.Context, sequence uint64, publishedAt, sourceCommit string) ([]byte, error) {
-	value := snapshot.Snapshot{SchemaVersion: 1, Sequence: sequence, PublishedAt: publishedAt, SourceCommit: sourceCommit, MinClientVersion: "0.3.0-beta.1"}
+	value := snapshot.Snapshot{SchemaVersion: 1, Sequence: sequence, PublishedAt: publishedAt, SourceCommit: sourceCommit, MinClientVersion: "0.0.1"}
 	platforms := []provider.Platform{{OS: "linux", Arch: "x64"}, {OS: "linux", Arch: "aarch64"}, {OS: "darwin", Arch: "x64"}, {OS: "darwin", Arch: "aarch64"}, {OS: "windows", Arch: "x64"}, {OS: "windows", Arch: "aarch64"}}
 	for _, meta := range initialCandidates {
 		source, ok := provider.Default(meta.name)

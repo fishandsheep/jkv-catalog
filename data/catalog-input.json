@@ -3,7 +3,7 @@
   "sequence": 4,
   "published_at": "2026-08-07T00:44:45Z",
   "source_commit": "785cc8e95843ad96301bf46099e1fd2d00062ae8",
-  "min_client_version": "0.3.0-beta.1",
+  "min_client_version": "0.0.1",
   "candidates": [
     {
       "name": "java",
