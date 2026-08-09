@@ -58,7 +58,7 @@ Release 最小形状：
 
 ## Catalog 与 jkv
 
-v0.3 jkv 验证签名 `latest.json` 和不可变 Snapshot，优先 CNB、网络故障时使用 GitHub 或本机可信缓存。客户端不会执行本仓库代码。已发布 Snapshot 永不改写；数据错误提高 `sequence` 前滚，安全问题新增 `revocations`。
+v0.0.1 jkv 验证签名 `latest.json` 和不可变 Snapshot，优先 CNB、网络故障时使用 GitHub 或本机可信缓存。客户端不会执行本仓库代码。已发布 Snapshot 永不改写；数据错误提高 `sequence` 前滚，安全问题新增 `revocations`。
 
 ## 维护与发布
 
