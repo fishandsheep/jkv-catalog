@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "sequence": 4,
-  "published_at": "2026-08-07T00:44:45Z",
-  "source_commit": "785cc8e95843ad96301bf46099e1fd2d00062ae8",
+  "sequence": 5,
+  "published_at": "2026-08-12T20:06:02Z",
+  "source_commit": "3f267bd2e0c6f7cd1b90dc6bd913990bcf59f099",
   "min_client_version": "0.0.1",
   "candidates": [
     {
@@ -386,29 +386,7 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.4.0.4%2B7-test-dragonwell_standard/Alibaba_Dragonwell_Standard_25.0.4.0.4.7_x64_linux.tar.gz"
-                },
-                {
-                  "artifact_id": "java-dragonwell-25.0.4.0.4.7-linux-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "linux",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.4.0.4%2B7-test-dragonwell_standard/Alibaba_Dragonwell_Standard_25.0.4.0.4.7_aarch64_linux.tar.gz"
-                },
-                {
-                  "artifact_id": "java-dragonwell-25.0.4.0.4.7-windows-x64",
-                  "archive_type": "zip",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "x64"
-                    }
-                  ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.4.0.4%2B7-test-dragonwell_standard/Alibaba_Dragonwell_Standard_25.0.4.0.4.7_x64_windows.zip"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.4.0.4%2B7/Alibaba_Dragonwell_Standard_25.0.4.0.4.7_x64_linux.tar.gz"
                 }
               ]
             },
