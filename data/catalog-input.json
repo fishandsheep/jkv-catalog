@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "sequence": 6,
-  "published_at": "2026-08-13T20:00:55Z",
-  "source_commit": "207e899cf5f06c50710ff332ec1e987ea7afc449",
+  "sequence": 7,
+  "published_at": "2026-08-17T19:45:08Z",
+  "source_commit": "a15cf09a7f32132acbe558fdbf5b407968e6a3c6",
   "min_client_version": "0.0.1",
   "candidates": [
     {
@@ -387,6 +387,28 @@
                     }
                   ],
                   "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.4.0.4%2B7/Alibaba_Dragonwell_Standard_25.0.4.0.4.7_x64_linux.tar.gz"
+                },
+                {
+                  "artifact_id": "java-dragonwell-25.0.4.0.4.7-linux-aarch64",
+                  "archive_type": "tar.gz",
+                  "platforms": [
+                    {
+                      "os": "linux",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.4.0.4%2B7/Alibaba_Dragonwell_Standard_25.0.4.0.4.7_aarch64_linux.tar.gz"
+                },
+                {
+                  "artifact_id": "java-dragonwell-25.0.4.0.4.7-windows-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "windows",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/25.0.4.0.4%2B7/Alibaba_Dragonwell_Standard_25.0.4.0.4.7_x64_windows.zip"
                 }
               ]
             },
@@ -13249,12 +13271,12 @@
           "display_name": "Apache",
           "releases": [
             {
-              "version": "5.0.8",
-              "selector": "5.0.8",
+              "version": "5.1.0",
+              "selector": "5.1.0",
               "support_tier": "beta",
               "artifacts": [
                 {
-                  "artifact_id": "groovy-apache-5.0.8-linux-x64",
+                  "artifact_id": "groovy-apache-5.1.0-linux-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13262,10 +13284,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.8/distribution/apache-groovy-binary-5.0.8.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.0/distribution/apache-groovy-binary-5.1.0.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.0.8-linux-aarch64",
+                  "artifact_id": "groovy-apache-5.1.0-linux-aarch64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13273,10 +13295,10 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.8/distribution/apache-groovy-binary-5.0.8.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.0/distribution/apache-groovy-binary-5.1.0.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.0.8-darwin-x64",
+                  "artifact_id": "groovy-apache-5.1.0-darwin-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13284,10 +13306,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.8/distribution/apache-groovy-binary-5.0.8.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.0/distribution/apache-groovy-binary-5.1.0.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.0.8-darwin-aarch64",
+                  "artifact_id": "groovy-apache-5.1.0-darwin-aarch64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13295,10 +13317,10 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.8/distribution/apache-groovy-binary-5.0.8.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.0/distribution/apache-groovy-binary-5.1.0.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.0.8-windows-x64",
+                  "artifact_id": "groovy-apache-5.1.0-windows-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13306,10 +13328,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.8/distribution/apache-groovy-binary-5.0.8.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.0/distribution/apache-groovy-binary-5.1.0.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.0.8-windows-aarch64",
+                  "artifact_id": "groovy-apache-5.1.0-windows-aarch64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13317,7 +13339,7 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.0.8/distribution/apache-groovy-binary-5.0.8.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.0/distribution/apache-groovy-binary-5.1.0.zip"
                 }
               ]
             },
