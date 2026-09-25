@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "sequence": 9,
-  "published_at": "2026-09-17T22:14:13Z",
-  "source_commit": "69611bd8d87b78a1509c85442eb7e4362009bcef",
+  "sequence": 10,
+  "published_at": "2026-09-25T22:26:45Z",
+  "source_commit": "7b2c0e805b9b734970bd828449a331309a5af017",
   "min_client_version": "0.0.1",
   "candidates": [
     {
@@ -333,12 +333,12 @@
           "display_name": "Alibaba Dragonwell",
           "releases": [
             {
-              "version": "8.29.28",
-              "selector": "8.29.28-dragonwell",
+              "version": "8.30.29",
+              "selector": "8.30.29-dragonwell",
               "support_tier": "beta",
               "artifacts": [
                 {
-                  "artifact_id": "java-dragonwell-8.29.28-linux-x64",
+                  "artifact_id": "java-dragonwell-8.30.29-linux-x64",
                   "archive_type": "tar.gz",
                   "platforms": [
                     {
@@ -346,10 +346,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/8.29.28/Alibaba_Dragonwell_Standard_8.29.28_x64_linux.tar.gz"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/8.30.29-test-dragonwell_standard/Alibaba_Dragonwell_Standard_8.30.29_x64_linux.tar.gz"
                 },
                 {
-                  "artifact_id": "java-dragonwell-8.29.28-linux-aarch64",
+                  "artifact_id": "java-dragonwell-8.30.29-linux-aarch64",
                   "archive_type": "tar.gz",
                   "platforms": [
                     {
@@ -357,10 +357,10 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/8.29.28/Alibaba_Dragonwell_Standard_8.29.28_aarch64_linux.tar.gz"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/8.30.29-test-dragonwell_standard/Alibaba_Dragonwell_Standard_8.30.29_aarch64_linux.tar.gz"
                 },
                 {
-                  "artifact_id": "java-dragonwell-8.29.28-windows-x64",
+                  "artifact_id": "java-dragonwell-8.30.29-windows-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -368,7 +368,7 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/8.29.28/Alibaba_Dragonwell_Standard_8.29.28_x64_windows.zip"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/8.30.29-test-dragonwell_standard/Alibaba_Dragonwell_Standard_8.30.29_x64_windows.zip"
                 }
               ]
             },
@@ -426,7 +426,7 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/21.0.12.0.12%2B8-test-dragonwell_standard/Alibaba_Dragonwell_Standard_21.0.12.0.12.8_x64_linux.tar.gz"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/21.0.12.0.12%2B8/Alibaba_Dragonwell_Standard_21.0.12.0.12.8_x64_linux.tar.gz"
                 },
                 {
                   "artifact_id": "java-dragonwell-21.0.12.0.12.8-linux-aarch64",
@@ -437,7 +437,7 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/21.0.12.0.12%2B8-test-dragonwell_standard/Alibaba_Dragonwell_Standard_21.0.12.0.12.8_aarch64_linux.tar.gz"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/21.0.12.0.12%2B8/Alibaba_Dragonwell_Standard_21.0.12.0.12.8_aarch64_linux.tar.gz"
                 },
                 {
                   "artifact_id": "java-dragonwell-21.0.12.0.12.8-windows-x64",
@@ -448,7 +448,7 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/21.0.12.0.12%2B8-test-dragonwell_standard/Alibaba_Dragonwell_Standard_21.0.12.0.12.8_x64_windows.zip"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/21.0.12.0.12%2B8/Alibaba_Dragonwell_Standard_21.0.12.0.12.8_x64_windows.zip"
                 }
               ]
             },
@@ -466,7 +466,7 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/17.0.20.0.21%2B8-test-dragonwell_standard/Alibaba_Dragonwell_Standard_17.0.20.0.21.8_x64_linux.tar.gz"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/17.0.20.0.21%2B8/Alibaba_Dragonwell_Standard_17.0.20.0.21.8_x64_linux.tar.gz"
                 },
                 {
                   "artifact_id": "java-dragonwell-17.0.20.0.21.8-linux-aarch64",
@@ -477,7 +477,7 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/17.0.20.0.21%2B8-test-dragonwell_standard/Alibaba_Dragonwell_Standard_17.0.20.0.21.8_aarch64_linux.tar.gz"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/17.0.20.0.21%2B8/Alibaba_Dragonwell_Standard_17.0.20.0.21.8_aarch64_linux.tar.gz"
                 },
                 {
                   "artifact_id": "java-dragonwell-17.0.20.0.21.8-windows-x64",
@@ -488,17 +488,17 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/17.0.20.0.21%2B8-test-dragonwell_standard/Alibaba_Dragonwell_Standard_17.0.20.0.21.8_x64_windows.zip"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/17.0.20.0.21%2B8/Alibaba_Dragonwell_Standard_17.0.20.0.21.8_x64_windows.zip"
                 }
               ]
             },
             {
-              "version": "11.0.31.27.11",
-              "selector": "11.0.31.27.11-dragonwell",
+              "version": "11.0.32.28.9",
+              "selector": "11.0.32.28.9-dragonwell",
               "support_tier": "beta",
               "artifacts": [
                 {
-                  "artifact_id": "java-dragonwell-11.0.31.27.11-linux-x64",
+                  "artifact_id": "java-dragonwell-11.0.32.28.9-linux-x64",
                   "archive_type": "tar.gz",
                   "platforms": [
                     {
@@ -506,10 +506,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/11.0.31.27.11/Alibaba_Dragonwell_Standard_11.0.31.27.11_x64_linux.tar.gz"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/11.0.32.28.9-test-dragonwell_standard/Alibaba_Dragonwell_Standard_11.0.32.28.9_x64_linux.tar.gz"
                 },
                 {
-                  "artifact_id": "java-dragonwell-11.0.31.27.11-linux-aarch64",
+                  "artifact_id": "java-dragonwell-11.0.32.28.9-linux-aarch64",
                   "archive_type": "tar.gz",
                   "platforms": [
                     {
@@ -517,10 +517,10 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/11.0.31.27.11/Alibaba_Dragonwell_Standard_11.0.31.27.11_aarch64_linux.tar.gz"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/11.0.32.28.9-test-dragonwell_standard/Alibaba_Dragonwell_Standard_11.0.32.28.9_aarch64_linux.tar.gz"
                 },
                 {
-                  "artifact_id": "java-dragonwell-11.0.31.27.11-windows-x64",
+                  "artifact_id": "java-dragonwell-11.0.32.28.9-windows-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -528,7 +528,7 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/11.0.31.27.11/Alibaba_Dragonwell_Standard_11.0.31.27.11_x64_windows.zip"
+                  "url": "https://dragonwell.oss-cn-shanghai.aliyuncs.com/11.0.32.28.9-test-dragonwell_standard/Alibaba_Dragonwell_Standard_11.0.32.28.9_x64_windows.zip"
                 }
               ]
             }
@@ -786,6 +786,79 @@
           "name": "gradle",
           "display_name": "Gradle",
           "releases": [
+            {
+              "version": "9.8.0",
+              "selector": "9.8.0",
+              "support_tier": "core",
+              "artifacts": [
+                {
+                  "artifact_id": "gradle-gradle-9.8.0-linux-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "linux",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.8.0-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.8.0-linux-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "linux",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.8.0-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.8.0-darwin-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.8.0-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.8.0-darwin-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.8.0-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.8.0-windows-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "windows",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.8.0-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.8.0-windows-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "windows",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.8.0-bin.zip"
+                }
+              ]
+            },
             {
               "version": "9.7.1",
               "selector": "9.7.1",
@@ -13373,12 +13446,12 @@
           "display_name": "Apache",
           "releases": [
             {
-              "version": "5.1.2",
-              "selector": "5.1.2",
+              "version": "6.0.0",
+              "selector": "6.0.0",
               "support_tier": "beta",
               "artifacts": [
                 {
-                  "artifact_id": "groovy-apache-5.1.2-linux-x64",
+                  "artifact_id": "groovy-apache-6.0.0-linux-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13386,10 +13459,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.2/distribution/apache-groovy-binary-5.1.2.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/6.0.0/distribution/apache-groovy-binary-6.0.0.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.1.2-linux-aarch64",
+                  "artifact_id": "groovy-apache-6.0.0-linux-aarch64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13397,10 +13470,10 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.2/distribution/apache-groovy-binary-5.1.2.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/6.0.0/distribution/apache-groovy-binary-6.0.0.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.1.2-darwin-x64",
+                  "artifact_id": "groovy-apache-6.0.0-darwin-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13408,10 +13481,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.2/distribution/apache-groovy-binary-5.1.2.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/6.0.0/distribution/apache-groovy-binary-6.0.0.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.1.2-darwin-aarch64",
+                  "artifact_id": "groovy-apache-6.0.0-darwin-aarch64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13419,10 +13492,10 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.2/distribution/apache-groovy-binary-5.1.2.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/6.0.0/distribution/apache-groovy-binary-6.0.0.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.1.2-windows-x64",
+                  "artifact_id": "groovy-apache-6.0.0-windows-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13430,10 +13503,10 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.2/distribution/apache-groovy-binary-5.1.2.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/6.0.0/distribution/apache-groovy-binary-6.0.0.zip"
                 },
                 {
-                  "artifact_id": "groovy-apache-5.1.2-windows-aarch64",
+                  "artifact_id": "groovy-apache-6.0.0-windows-aarch64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -13441,7 +13514,80 @@
                       "arch": "aarch64"
                     }
                   ],
-                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.2/distribution/apache-groovy-binary-5.1.2.zip"
+                  "url": "https://mirrors.aliyun.com/apache/groovy/6.0.0/distribution/apache-groovy-binary-6.0.0.zip"
+                }
+              ]
+            },
+            {
+              "version": "5.1.3",
+              "selector": "5.1.3",
+              "support_tier": "beta",
+              "artifacts": [
+                {
+                  "artifact_id": "groovy-apache-5.1.3-linux-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "linux",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.3/distribution/apache-groovy-binary-5.1.3.zip"
+                },
+                {
+                  "artifact_id": "groovy-apache-5.1.3-linux-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "linux",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.3/distribution/apache-groovy-binary-5.1.3.zip"
+                },
+                {
+                  "artifact_id": "groovy-apache-5.1.3-darwin-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.3/distribution/apache-groovy-binary-5.1.3.zip"
+                },
+                {
+                  "artifact_id": "groovy-apache-5.1.3-darwin-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.3/distribution/apache-groovy-binary-5.1.3.zip"
+                },
+                {
+                  "artifact_id": "groovy-apache-5.1.3-windows-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "windows",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.3/distribution/apache-groovy-binary-5.1.3.zip"
+                },
+                {
+                  "artifact_id": "groovy-apache-5.1.3-windows-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "windows",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.aliyun.com/apache/groovy/5.1.3/distribution/apache-groovy-binary-5.1.3.zip"
                 }
               ]
             },
