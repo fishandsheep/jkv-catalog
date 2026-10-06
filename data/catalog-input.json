@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "sequence": 11,
-  "published_at": "2026-10-03T22:10:20Z",
-  "source_commit": "d567e78e8aed7e3d9684b61f4be9a53657ab486b",
+  "sequence": 12,
+  "published_at": "2026-10-06T23:05:46Z",
+  "source_commit": "7d327ace9c035e207702d75578a6bddbfd550753",
   "min_client_version": "0.0.1",
   "candidates": [
     {
@@ -14060,79 +14060,6 @@
               ]
             },
             {
-              "version": "9.0.121",
-              "selector": "9.0.121",
-              "support_tier": "beta",
-              "artifacts": [
-                {
-                  "artifact_id": "tomcat-apache-9.0.121-linux-x64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "linux",
-                      "arch": "x64"
-                    }
-                  ],
-                  "url": "https://mirrors.aliyun.com/apache/tomcat/tomcat-9/v9.0.121/bin/apache-tomcat-9.0.121.tar.gz"
-                },
-                {
-                  "artifact_id": "tomcat-apache-9.0.121-linux-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "linux",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://mirrors.aliyun.com/apache/tomcat/tomcat-9/v9.0.121/bin/apache-tomcat-9.0.121.tar.gz"
-                },
-                {
-                  "artifact_id": "tomcat-apache-9.0.121-darwin-x64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "darwin",
-                      "arch": "x64"
-                    }
-                  ],
-                  "url": "https://mirrors.aliyun.com/apache/tomcat/tomcat-9/v9.0.121/bin/apache-tomcat-9.0.121.tar.gz"
-                },
-                {
-                  "artifact_id": "tomcat-apache-9.0.121-darwin-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "darwin",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://mirrors.aliyun.com/apache/tomcat/tomcat-9/v9.0.121/bin/apache-tomcat-9.0.121.tar.gz"
-                },
-                {
-                  "artifact_id": "tomcat-apache-9.0.121-windows-x64",
-                  "archive_type": "zip",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "x64"
-                    }
-                  ],
-                  "url": "https://mirrors.aliyun.com/apache/tomcat/tomcat-9/v9.0.121/bin/apache-tomcat-9.0.121.zip"
-                },
-                {
-                  "artifact_id": "tomcat-apache-9.0.121-windows-aarch64",
-                  "archive_type": "zip",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://mirrors.aliyun.com/apache/tomcat/tomcat-9/v9.0.121/bin/apache-tomcat-9.0.121.zip"
-                }
-              ]
-            },
-            {
               "version": "11.0.26",
               "selector": "11.0.26",
               "support_tier": "beta",
@@ -14275,79 +14202,6 @@
                     }
                   ],
                   "url": "https://mirrors.aliyun.com/apache/tomcat/tomcat-10/v10.1.60/bin/apache-tomcat-10.1.60.zip"
-                }
-              ]
-            },
-            {
-              "version": "10.1.59",
-              "selector": "10.1.59",
-              "support_tier": "beta",
-              "artifacts": [
-                {
-                  "artifact_id": "tomcat-apache-10.1.59-linux-x64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "linux",
-                      "arch": "x64"
-                    }
-                  ],
-                  "url": "https://mirrors.aliyun.com/apache/tomcat/tomcat-10/v10.1.59/bin/apache-tomcat-10.1.59.tar.gz"
-                },
-                {
-                  "artifact_id": "tomcat-apache-10.1.59-linux-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "linux",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://mirrors.aliyun.com/apache/tomcat/tomcat-10/v10.1.59/bin/apache-tomcat-10.1.59.tar.gz"
-                },
-                {
-                  "artifact_id": "tomcat-apache-10.1.59-darwin-x64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "darwin",
-                      "arch": "x64"
-                    }
-                  ],
-                  "url": "https://mirrors.aliyun.com/apache/tomcat/tomcat-10/v10.1.59/bin/apache-tomcat-10.1.59.tar.gz"
-                },
-                {
-                  "artifact_id": "tomcat-apache-10.1.59-darwin-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "darwin",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://mirrors.aliyun.com/apache/tomcat/tomcat-10/v10.1.59/bin/apache-tomcat-10.1.59.tar.gz"
-                },
-                {
-                  "artifact_id": "tomcat-apache-10.1.59-windows-x64",
-                  "archive_type": "zip",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "x64"
-                    }
-                  ],
-                  "url": "https://mirrors.aliyun.com/apache/tomcat/tomcat-10/v10.1.59/bin/apache-tomcat-10.1.59.zip"
-                },
-                {
-                  "artifact_id": "tomcat-apache-10.1.59-windows-aarch64",
-                  "archive_type": "zip",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://mirrors.aliyun.com/apache/tomcat/tomcat-10/v10.1.59/bin/apache-tomcat-10.1.59.zip"
                 }
               ]
             }
