@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "sequence": 12,
-  "published_at": "2026-10-06T23:05:46Z",
-  "source_commit": "7d327ace9c035e207702d75578a6bddbfd550753",
+  "sequence": 13,
+  "published_at": "2026-10-09T23:18:32Z",
+  "source_commit": "ef90d14ad6a5ec00270a6c919c8bdfbbdeb6c7be",
   "min_client_version": "0.0.1",
   "candidates": [
     {
@@ -859,6 +859,79 @@
           "name": "gradle",
           "display_name": "Gradle",
           "releases": [
+            {
+              "version": "9.8.1",
+              "selector": "9.8.1",
+              "support_tier": "core",
+              "artifacts": [
+                {
+                  "artifact_id": "gradle-gradle-9.8.1-linux-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "linux",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.8.1-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.8.1-linux-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "linux",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.8.1-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.8.1-darwin-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.8.1-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.8.1-darwin-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.8.1-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.8.1-windows-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "windows",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.8.1-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-9.8.1-windows-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "windows",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-9.8.1-bin.zip"
+                }
+              ]
+            },
             {
               "version": "9.8.0",
               "selector": "9.8.0",
@@ -2608,6 +2681,79 @@
                     }
                   ],
                   "url": "https://mirrors.cloud.tencent.com/gradle/gradle-8.2-bin.zip"
+                }
+              ]
+            },
+            {
+              "version": "8.14.6",
+              "selector": "8.14.6",
+              "support_tier": "core",
+              "artifacts": [
+                {
+                  "artifact_id": "gradle-gradle-8.14.6-linux-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "linux",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-8.14.6-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-8.14.6-linux-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "linux",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-8.14.6-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-8.14.6-darwin-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-8.14.6-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-8.14.6-darwin-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-8.14.6-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-8.14.6-windows-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "windows",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-8.14.6-bin.zip"
+                },
+                {
+                  "artifact_id": "gradle-gradle-8.14.6-windows-aarch64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "windows",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.cloud.tencent.com/gradle/gradle-8.14.6-bin.zip"
                 }
               ]
             },
