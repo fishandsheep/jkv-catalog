@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "sequence": 15,
-  "published_at": "2026-10-27T22:59:06Z",
-  "source_commit": "9ac6cdc8c7fa9cd580d6ff1d287d82561607d115",
+  "sequence": 16,
+  "published_at": "2026-10-30T23:00:02Z",
+  "source_commit": "03af78a8d015443fc6a071c5d9b3f079f6e2e869",
   "min_client_version": "0.0.1",
   "candidates": [
     {
@@ -115,16 +115,9 @@
                     }
                   ],
                   "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/25/jdk/aarch64/mac/OpenJDK25U-jdk_aarch64_mac_hotspot_25.0.5_8.tar.gz"
-                }
-              ]
-            },
-            {
-              "version": "25.0.4.1+1",
-              "selector": "25.0.4.1+1-temurin",
-              "support_tier": "core",
-              "artifacts": [
+                },
                 {
-                  "artifact_id": "java-temurin-25.0.4.1-1-windows-x64",
+                  "artifact_id": "java-temurin-25.0.5-8-windows-x64",
                   "archive_type": "zip",
                   "platforms": [
                     {
@@ -132,7 +125,7 @@
                       "arch": "x64"
                     }
                   ],
-                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/25/jdk/x64/windows/OpenJDK25U-jdk_x64_windows_hotspot_25.0.4.1_1.zip"
+                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/25/jdk/x64/windows/OpenJDK25U-jdk_x64_windows_hotspot_25.0.5_8.zip"
                 }
               ]
             },
@@ -184,6 +177,17 @@
                     }
                   ],
                   "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/21/jdk/aarch64/mac/OpenJDK21U-jdk_aarch64_mac_hotspot_21.0.13_9.tar.gz"
+                },
+                {
+                  "artifact_id": "java-temurin-21.0.13-9-windows-x64",
+                  "archive_type": "zip",
+                  "platforms": [
+                    {
+                      "os": "windows",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/21/jdk/x64/windows/OpenJDK21U-jdk_x64_windows_hotspot_21.0.13_9.zip"
                 }
               ]
             },
@@ -192,17 +196,6 @@
               "selector": "21.0.12.1+1-temurin",
               "support_tier": "core",
               "artifacts": [
-                {
-                  "artifact_id": "java-temurin-21.0.12.1-1-windows-x64",
-                  "archive_type": "zip",
-                  "platforms": [
-                    {
-                      "os": "windows",
-                      "arch": "x64"
-                    }
-                  ],
-                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/21/jdk/x64/windows/OpenJDK21U-jdk_x64_windows_hotspot_21.0.12.1_1.zip"
-                },
                 {
                   "artifact_id": "java-temurin-21.0.12.1-1-windows-aarch64",
                   "archive_type": "zip",
@@ -233,6 +226,28 @@
                   "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/17/jdk/x64/linux/OpenJDK17U-jdk_x64_linux_hotspot_17.0.21_9.tar.gz"
                 },
                 {
+                  "artifact_id": "java-temurin-17.0.21-9-linux-aarch64",
+                  "archive_type": "tar.gz",
+                  "platforms": [
+                    {
+                      "os": "linux",
+                      "arch": "aarch64"
+                    }
+                  ],
+                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/17/jdk/aarch64/linux/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.21_9.tar.gz"
+                },
+                {
+                  "artifact_id": "java-temurin-17.0.21-9-darwin-x64",
+                  "archive_type": "tar.gz",
+                  "platforms": [
+                    {
+                      "os": "darwin",
+                      "arch": "x64"
+                    }
+                  ],
+                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/17/jdk/x64/mac/OpenJDK17U-jdk_x64_mac_hotspot_17.0.21_9.tar.gz"
+                },
+                {
                   "artifact_id": "java-temurin-17.0.21-9-darwin-aarch64",
                   "archive_type": "tar.gz",
                   "platforms": [
@@ -250,28 +265,6 @@
               "selector": "17.0.20.1+1-temurin",
               "support_tier": "core",
               "artifacts": [
-                {
-                  "artifact_id": "java-temurin-17.0.20.1-1-linux-aarch64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "linux",
-                      "arch": "aarch64"
-                    }
-                  ],
-                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/17/jdk/aarch64/linux/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.20.1_1.tar.gz"
-                },
-                {
-                  "artifact_id": "java-temurin-17.0.20.1-1-darwin-x64",
-                  "archive_type": "tar.gz",
-                  "platforms": [
-                    {
-                      "os": "darwin",
-                      "arch": "x64"
-                    }
-                  ],
-                  "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/17/jdk/x64/mac/OpenJDK17U-jdk_x64_mac_hotspot_17.0.20.1_1.tar.gz"
-                },
                 {
                   "artifact_id": "java-temurin-17.0.20.1-1-windows-x64",
                   "archive_type": "zip",
