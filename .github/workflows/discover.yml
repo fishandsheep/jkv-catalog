@@ -2,8 +2,8 @@ name: Discover catalog updates
 
 on:
   schedule:
-    # 03:17 Asia/Shanghai. GitHub schedules use UTC.
-    - cron: '17 19 * * *'
+    # Weekly, Monday 03:17 Asia/Shanghai. GitHub schedules use UTC.
+    - cron: '17 19 * * 0'
   workflow_dispatch:
 
 permissions:
@@ -52,6 +52,7 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           BRANCH: bot/catalog-discovery
         run: |
+          set -e
           git config user.name 'jkv-catalog[bot]'
           git config user.email 'jkv-catalog[bot]@users.noreply.github.com'
           git switch -C "$BRANCH"
@@ -63,13 +64,16 @@ jobs:
             exit 1
           fi
           if test -n "$pr"; then
-            if ! gh pr edit "$pr" --repo "$REPOSITORY" --body '自动发现到 Catalog 语义变化。请审核新增/删除 Release、URL、平台、selector 与 checksum；此 PR 不持有签名或发布权限。'; then
+            if ! gh pr edit "$pr" --repo "$REPOSITORY" --body '自动发现到 Catalog 语义变化。CI 通过且无冲突时将自动合并；此 PR 不持有签名或发布权限。'; then
               echo '::error::无法更新 rolling review PR。请启用 Actions 创建/批准 PR，或配置 CATALOG_DISCOVERY_TOKEN。'
               exit 1
             fi
           else
-            if ! gh pr create --repo "$REPOSITORY" --base main --head "$BRANCH" --title 'data: refresh discovered catalog' --body '自动发现到 Catalog 语义变化。请审核新增/删除 Release、URL、平台、selector 与 checksum；此 PR 不持有签名或发布权限。'; then
+            if ! gh pr create --repo "$REPOSITORY" --base main --head "$BRANCH" --title 'data: refresh discovered catalog' --body '自动发现到 Catalog 语义变化。CI 通过且无冲突时将自动合并；此 PR 不持有签名或发布权限。'; then
               echo '::error::无法创建 rolling review PR。请在 Settings > Actions > General 开启 Allow GitHub Actions to create and approve pull requests，或配置具备 contents:write 与 pull_requests:write 的 CATALOG_DISCOVERY_TOKEN。'
               exit 1
             fi
+            pr="$(gh pr list --repo "$REPOSITORY" --head "$BRANCH" --state open --json number --jq '.[0].number')"
           fi
+          # Auto-merge once CI passes and there are no conflicts; no manual review needed.
+          gh pr merge "$pr" --repo "$REPOSITORY" --auto --squash
