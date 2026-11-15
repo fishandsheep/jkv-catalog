@@ -9,6 +9,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 concurrency:
   group: catalog-discovery
@@ -77,3 +78,17 @@ jobs:
           fi
           # Auto-merge once CI passes and there are no conflicts; no manual review needed.
           gh pr merge "$pr" --repo "$REPOSITORY" --auto --squash
+          # Wait for auto-merge to land, then dispatch publication (GITHUB_TOKEN may
+          # dispatch workflow_dispatch events per GitHub changelog 2022-09-08).
+          for _ in $(seq 1 90); do
+            state="$(gh pr view "$pr" --repo "$REPOSITORY" --json state --jq .state)"
+            if test "$state" = MERGED; then
+              gh workflow run publish.yml --repo "$REPOSITORY" --ref main \
+                -f data_file=data/catalog-input.json -f dry_run=false
+              exit 0
+            fi
+            test "$state" = OPEN || break
+            sleep 10
+          done
+          echo '::error::PR 未能在超时前自动合并，Publish catalog 未触发。'
+          exit 1
